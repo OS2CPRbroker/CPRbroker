@@ -74,7 +74,7 @@ namespace CprBroker.Installers
         public static readonly string AdminConnectionFailed = "Admin connection failed";
         public static readonly string ApplicationConnectionFailedCheckUserNameAndPassword = "Application connection failed. Please check the user name and password";
 
-        public static readonly string DatabaseAlreadyExistsDoYouWantToUseExisting = "The database already exists, would you like to use the exisitng database?";
+        public static readonly string DatabaseAlreadyExistsDoYouWantToUseExisting = "The database already exists, would you like to use the existing database?";
         public static readonly string DatabaseAlreadyExists = "The database already exists";
         public static readonly string DoYouWantToDropDatabase = "Do you want to drop the system's database?";
         public static readonly string DatabaseDoesNotExist = "The database does not exist. Please check the database name";
