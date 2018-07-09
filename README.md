@@ -13,5 +13,4 @@ http://mozilla.org/MPL/2.0/.
 All source code in this and the underlying directories is subject to
 the terms of the Mozilla Public License, v. 2.0. 
 
-Release repository: https://github.com/OS2CPRbroker/cprbroker
-Development repository: https://github.com/magenta-aps/cprbroker
+Repository: https://github.com/OS2CPRbroker/cprbroker
