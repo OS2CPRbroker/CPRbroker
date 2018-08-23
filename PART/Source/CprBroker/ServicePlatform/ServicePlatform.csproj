@@ -33,7 +33,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CprBroker.Config, Version=2.2.11.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="CprBroker.Config">
+      <HintPath>..\..\Core\Output\CprBroker.Config.dll</HintPath>
+    </Reference>
     <Reference Include="CprBroker.Engine">
       <HintPath>..\..\Core\Output\CprBroker.Engine.dll</HintPath>
     </Reference>

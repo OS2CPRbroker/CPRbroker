@@ -51,6 +51,7 @@ using System.Linq;
 using System.Text;
 using System.Data.SqlClient;
 using CprBroker.Utilities.Config;
+using CprBroker.Config;
 
 namespace CprBroker.Providers.ServicePlatform
 {
