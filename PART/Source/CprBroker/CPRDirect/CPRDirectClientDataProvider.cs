@@ -109,8 +109,21 @@ namespace CprBroker.Providers.CPRDirect
                     subscriptionType: SubscriptionType.DeleteSubscription,
                     dataType: DataType.NoData,
                     pnr: decimal.Parse(personIdentifier.CprNumber));
-                IndividualResponseType response = this.GetResponse(request);
-                return true;
+
+                // This commented code does not work for subscription removal, as there is no data in the request.
+                //IndividualResponseType response = this.GetResponse(request);
+
+
+                string response;
+                string error;
+                string operation = string.Format("{0}-{1}{2}", Constants.OnlineOperationName, request.DataType, request.SubscriptionType);
+                if(this.Send(operation, request.PNR, request.Contents, out response, out error))
+                {
+                    return true;
+                } else
+                {
+                    throw new Exception(error);
+                }
             }
             else
             {
