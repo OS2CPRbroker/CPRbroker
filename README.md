@@ -1,6 +1,6 @@
 ﻿# cprbroker
 The CPRBroker was programmed by Magenta ApS (http://magenta.dk)
-for OS2 - Offentligt digitaliseringsfællesskab, http://os2web.dk.
+for OS2 - Offentligt digitaliseringsfællesskab, http://os2.eu.
 
 Copyright (c) 2014, OS2 - Offentligt digitaliseringsfællesskab.
 
