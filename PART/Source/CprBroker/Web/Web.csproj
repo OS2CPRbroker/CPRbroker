@@ -23,6 +23,7 @@
     <TargetFrameworkProfile />
     <UseGlobalApplicationHostFile />
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -218,12 +219,14 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\LogDisplay\Activity.cshtml" />
     <Content Include="Views\LogDisplay\ActivityList.cshtml" />
+    <Content Include="Views\RemovePerson\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\LogDisplayController.cs" />
+    <Compile Include="Controllers\RemovePersonController.cs" />
     <Compile Include="Controllers\SubscriptionDataProviderController.cs" />
     <Compile Include="Pages\Controls\ConfigPropertyEditor.ascx.cs">
       <DependentUpon>ConfigPropertyEditor.ascx</DependentUpon>
