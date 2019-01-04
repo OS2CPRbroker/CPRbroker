@@ -160,7 +160,11 @@ namespace CprBroker.Engine
             {
                 output.StandardRetur = StandardReturType.RequestUnreadable(ex.Message);
             }
-            else
+            else if(ex is FormatException)
+            {
+                output.StandardRetur = StandardReturType.RequestUnreadable(ex.Message);
+            }
+            else 
             {
                 output.StandardRetur = StandardReturType.UnspecifiedError();
             }
@@ -300,6 +304,8 @@ namespace CprBroker.Engine
         {
             if (message.Exception != null && typeof(IBasicOutput).IsAssignableFrom(message.MethodInfo.ReturnType))
             {
+                BrokerContext.Initialize(Constants.BaseApplicationToken.ToString(), Constants.UserToken);
+                Local.Admin.LogException(message.Exception);
                 var output = CreateReturnValue(message);
 
                 string messageName, serviceNamespace;
