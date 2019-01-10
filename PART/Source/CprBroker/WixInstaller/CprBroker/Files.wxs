@@ -281,6 +281,10 @@
       <Component Id="CMP_CPR_Views_LogDisplay_Index" Directory="CPR_Views_LogDisplay">
         <File Id="FILE_CPR_Views_LogDisplay_Index" Source="$(var.SitePath)Views\LogDisplay\Index.cshtml" KeyPath="yes"/>
       </Component>
+
+      <Component Id="CMP_CPR_Views_RemovePerson_Index" Directory="CPR_Views_RemovePerson">
+        <File Id="FILE_CPR_Views_RemovePerson_Index" Source="$(var.SitePath)Views\RemovePerson\Index.cshtml" KeyPath="yes"/>
+      </Component>
     </ComponentGroup>
 
     <ComponentGroup Id="CMPGRP_CPR_Bootstrap">

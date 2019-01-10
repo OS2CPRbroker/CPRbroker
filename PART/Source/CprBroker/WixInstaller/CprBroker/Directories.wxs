@@ -18,6 +18,7 @@
             <Directory Id="CPR_Views_Shared" Name="Shared"/>
             <Directory Id="CPR_Views_SubscriptionDataProvider" Name="SubscriptionDataProvider"/>
             <Directory Id="CPR_Views_LogDisplay" Name="LogDisplay"/>
+            <Directory Id="CPR_Views_RemovePerson" Name="RemovePerson"/>
           </Directory>
           <Directory Id="CPR_Content" Name="Content">
             <Directory Id="CPR_libs" Name="libs">
