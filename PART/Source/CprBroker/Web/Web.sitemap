@@ -6,6 +6,7 @@
     <siteMapNode url="~/Pages/Dbr.aspx" title="DBR"  description="" />
     <siteMapNode url="~/Pages/LogEntries.aspx" title="Classic log"  description="" />
     <siteMapNode url="~/Pages/LogDisplay/" title="Detailed log"  description="" />
+    <siteMapNode url="~/Pages/RemovePerson/" title="Remove Person"  description="" />
     <!--<siteMapNode url="~/Pages/ExternalCalls.aspx" title="External calls"  description="" />
     <siteMapNode url="~/Pages/Budget.aspx" title="Budget"  description="" />-->
   </siteMapNode>

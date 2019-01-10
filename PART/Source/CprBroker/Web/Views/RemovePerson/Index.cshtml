@@ -1,0 +1,46 @@
+﻿@using CprBroker.Web.Controllers;
+@using CprBroker.Data.Applications;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Remove Person</title>
+</head>
+<body>
+    <div class="container" id="remove_person_container">
+        <div class="col-lg-6">
+            <h1>Remove Person</h1>
+            <div class="alert alert-warning">
+                <strong>WARNING!</strong> This action will remove a given person from the CPR Broker local cache.
+            </div>
+            <form id="removePersonForm">
+                <label class="sr-only" for="text">CPR nummer:</label>
+                <input type="text" class="form-control" id="cprNrInputField" placeholder="Type CPR Number here ..." name="cprNrInputField">
+                <br />
+                <input type="submit" value="Remove" id="removePersonButton" class="btn btn-danger">
+            </form>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                $("#removePersonForm").on("submit", function (e) {
+                    e.preventDefault();
+                    var formData = new FormData();
+                    formData.append("cprNrInputField", $('#cprNrInputField').val())
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("../Pages/RemovePerson")",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            alert(response);
+                        }
+                    });
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>

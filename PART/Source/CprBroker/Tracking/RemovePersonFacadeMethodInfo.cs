@@ -76,7 +76,7 @@ namespace CprBroker.Slet
             personIdentifier = PersonMapping.GetPersonIdentifier(this.uuid);
             if (personIdentifier == null)
             {
-                return StandardReturType.NullInput();
+                return StandardReturType.UnknownUuid(this.uuid.ToString());
             }
 
             return StandardReturType.OK();
