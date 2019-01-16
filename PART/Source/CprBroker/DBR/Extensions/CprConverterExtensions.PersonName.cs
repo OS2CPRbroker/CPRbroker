@@ -86,7 +86,7 @@ namespace CprBroker.DBR.Extensions
             pn.LastName = currentName.LastName.NullIfEmpty();
 
             // Special logic for addressing name
-            pn.AddressingName = ToDprAddressingName(currentName.AddressingName, currentName.LastName);
+            pn.AddressingName = currentName.AddressingName;
             pn.SearchName = null; //Said to be always blank
             pn.NameAuthorityText = null; //TODO: Can be fetched in CPR Services, myntxt
             return pn;
