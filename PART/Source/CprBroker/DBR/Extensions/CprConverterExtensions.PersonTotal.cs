@@ -385,7 +385,7 @@ namespace CprBroker.DBR.Extensions
                 pt.SearchSurname = null;
 
             // Special logic for addressing name
-            pt.AddressingName = ToDprAddressingName(resp.ClearWrittenAddress.AddressingName, resp.CurrentNameInformation.LastName);
+            pt.AddressingName = ToDprAddressingName(resp.ClearWrittenAddress.AddressingName);
             #endregion
 
             #region Update markers

@@ -138,7 +138,7 @@ namespace CprBroker.DBR.Extensions
                     string remainingAddressingNameParts = addressingName.Substring(
                         indexAfterFirstName, 
                         addressingName.Length - indexAfterFirstName).Remove(0, 1);
-                    string DprAddressingName = string.Format("{1}, {0}", remainingAddressingNameParts, firstName);
+                    string DprAddressingName = string.Format("{1},{0}", remainingAddressingNameParts, firstName);
                     return DprAddressingName;
                 }
             }
