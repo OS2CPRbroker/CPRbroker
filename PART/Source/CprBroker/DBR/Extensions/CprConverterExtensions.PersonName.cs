@@ -86,7 +86,7 @@ namespace CprBroker.DBR.Extensions
             pn.LastName = currentName.LastName.NullIfEmpty();
 
             // Special logic for addressing name
-            pn.AddressingName = currentName.AddressingName;
+            pn.AddressingName = ToDprAddressingName(currentName.AddressingName);
             pn.SearchName = null; //Said to be always blank
             pn.NameAuthorityText = null; //TODO: Can be fetched in CPR Services, myntxt
             return pn;
@@ -123,7 +123,7 @@ namespace CprBroker.DBR.Extensions
             return pn;
         }
 
-        public static string ToDprAddressingName(string addressingName, string lastName)
+        public static string ToDprAddressingName(string addressingName)
         {
             if (!string.IsNullOrEmpty(addressingName))
             {
@@ -133,13 +133,13 @@ namespace CprBroker.DBR.Extensions
                 }
                 else
                 {
-                    var lastNamePartCount = lastName.Split(' ').Length;
-                    var addressingNameParts = addressingName.Split(' ');
-                    var otherNamesPartCount = addressingNameParts.Length - lastNamePartCount;
-                    return string.Format("{0},{1}",
-                        string.Join(" ", addressingNameParts.Skip(otherNamesPartCount).ToArray()),
-                        string.Join(" ", addressingNameParts.Take(otherNamesPartCount).ToArray())
-                    );
+                    int indexAfterFirstName = addressingName.IndexOf(" ");
+                    string firstName = addressingName.Substring(0, indexAfterFirstName);
+                    string remainingAddressingNameParts = addressingName.Substring(
+                        indexAfterFirstName, 
+                        addressingName.Length - indexAfterFirstName).Remove(0, 1);
+                    string DprAddressingName = string.Format("{1}, {0}", remainingAddressingNameParts, firstName);
+                    return DprAddressingName;
                 }
             }
             return null;
