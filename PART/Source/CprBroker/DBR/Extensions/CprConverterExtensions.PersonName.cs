@@ -136,6 +136,20 @@ namespace CprBroker.DBR.Extensions
                     var lastNamePartCount = lastName.Split(' ').Length;
                     var addressingNameParts = addressingName.Split(' ');
                     var otherNamesPartCount = addressingNameParts.Length - lastNamePartCount;
+
+                    // Sometimes last names are deleted from addressing names, because of otherwise too long addressing name
+                    // resulting in same number of last names as addressing names. Eg. 
+                    // First name: Jens
+                    // Last name: Eriksen Hansen Mortensen Christensen Jensen
+                    // Addressing name: Jens Eriksen Hansen Mortensen Jensen
+                    // which will give a DprAddressingName like: Jens Eriksen Hansen Mortensen Jensen,
+                    // and can be more than the maximum of 34 characters because of the ending comma
+                    // Therefore we do a check and require at least one first name:
+                    if (otherNamesPartCount == 0)
+                    {
+                        otherNamesPartCount = 1;
+                    }
+
                     return string.Format("{0},{1}",
                         string.Join(" ", addressingNameParts.Skip(otherNamesPartCount).ToArray()),
                         string.Join(" ", addressingNameParts.Take(otherNamesPartCount).ToArray())
