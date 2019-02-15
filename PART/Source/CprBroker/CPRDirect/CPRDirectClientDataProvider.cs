@@ -50,7 +50,9 @@ using CprBroker.Engine;
 using CprBroker.Engine.Part;
 using CprBroker.Schemas;
 using CprBroker.Schemas.Part;
-using CprBroker.Utilities;
+using System.Data.SqlClient;
+using CprBroker.Utilities.Config;
+using CprBroker.Engine.Local;
 
 namespace CprBroker.Providers.CPRDirect
 {
@@ -58,7 +60,7 @@ namespace CprBroker.Providers.CPRDirect
     {
         #region IPartReadDataProvider members
 
-        public RegistreringType1 Read(CprBroker.Schemas.PersonIdentifier uuid, LaesInputType input, Func<string, Guid> cpr2uuidFunc, out QualityLevel? ql)
+        public RegistreringType1 Read(PersonIdentifier uuid, LaesInputType input, Func<string, Guid> cpr2uuidFunc, out QualityLevel? ql)
         {
             ql = QualityLevel.Cpr;
             var response = GetPerson(uuid.CprNumber);
@@ -81,6 +83,9 @@ namespace CprBroker.Providers.CPRDirect
         public bool PutSubscription(PersonIdentifier personIdentifier)
         {
             if (DisableSubscriptions)
+                return false;
+
+            if (IsBlacklistedForSubscriptions(personIdentifier))
                 return false;
 
             if (IPartPerCallDataProviderHelper.CanCallOnline(personIdentifier.CprNumber))
@@ -228,10 +233,11 @@ namespace CprBroker.Providers.CPRDirect
 
         public virtual IndividualResponseType GetPerson(string cprNumber)
         {
+
             if (IPartPerCallDataProviderHelper.CanCallOnline(cprNumber))
             {
                 IndividualRequestType request = new IndividualRequestType(
-                    putSubscription: !this.DisableSubscriptions,
+                    putSubscription: !(this.DisableSubscriptions || IsBlacklistedForSubscriptions(cprNumber)),
                     dataType: DataType.DefinedByTask,
                     pnr: decimal.Parse(cprNumber));
                 IndividualResponseType response = this.GetResponse(request);
@@ -244,5 +250,42 @@ namespace CprBroker.Providers.CPRDirect
             }
         }
         #endregion
+
+        private bool IsBlacklistedForSubscriptions(PersonIdentifier personIdentifier)
+        {
+            return IsBlacklistedForSubscriptions(personIdentifier.CprNumber);
+        }
+
+        private bool IsBlacklistedForSubscriptions(string personIdentifier)
+        {
+            // This is a Blacklist feature, where we check if the person is "blacklisted" and should not be subscriped to, when called through CPR Broker
+            using (var conn = new SqlConnection(ConfigManager.Current.Settings.CprBrokerConnectionString))
+            {
+                // This Try-Catch block is here since the [Blacklist] table will not always be at a server. When it is not, 
+                // the subscription process should just continue.
+                try
+                {
+                    // Count the number of Cpr numbers that match the cpr number being processed 
+                    // - we just need to know if it is in the db, but this is the easiest way
+                    var cmd = new SqlCommand("SELECT COUNT(1) FROM [Blacklist] WHERE CprNr = @cpr", conn);
+
+                    // Should be safer and more effecient than inserting it in the string above
+                    cmd.Parameters.AddWithValue("@cpr", personIdentifier);
+                    conn.Open();
+
+                    bool exists = 0 < (int)cmd.ExecuteScalar();
+
+                    if (exists)
+                    {
+                        Admin.LogSuccess("Subscription of person<" + personIdentifier + "> blocked, because person was Black-Listed ");
+                        return true;
+                    }
+
+                }
+                // If the [blacklist] table does not exist, the person is not blacklisted, so just make the subscription.
+                catch (SqlException) { }
+            }
+            return false;
+        }
     }
 }
