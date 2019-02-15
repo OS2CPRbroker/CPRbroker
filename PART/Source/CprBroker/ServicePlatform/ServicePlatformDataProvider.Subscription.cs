@@ -66,21 +66,29 @@ namespace CprBroker.Providers.ServicePlatform
             // This is a Blacklist feature, where we check if the person is "blacklisted" and should not be subscriped to, when called through CPR Broker
             using (var conn = new SqlConnection(ConfigManager.Current.Settings.CprBrokerConnectionString))
             {
-                // Count the number of Cpr numbers that match the cpr number being processed 
-                // - we just need to know if it is in the db, but this is the easiest way
-                var cmd = new SqlCommand("SELECT COUNT(1) FROM [Blacklist] WHERE CprNr = @cpr", conn);
-
-                // Should be safer and more effecient than inserting it in the string above
-                cmd.Parameters.AddWithValue("@cpr", personIdentifier.CprNumber);
-                conn.Open();
-
-                bool exists = 0 < (int)cmd.ExecuteScalar();
-                
-                if (exists) 
+                // This Try-Catch block is here since the [Blacklist] table will not always be at a server. When it is not, 
+                // the subscription process should just continue.
+                try
                 {
-                    Admin.LogSuccess("Subscription of person<"+personIdentifier.UUID+"> blocked, because person was Black-Listed ");
-                    return false;
+                    // Count the number of Cpr numbers that match the cpr number being processed 
+                    // - we just need to know if it is in the db, but this is the easiest way
+                    var cmd = new SqlCommand("SELECT COUNT(1) FROM [Blacklist] WHERE CprNr = @cpr", conn);
+
+                    // Should be safer and more effecient than inserting it in the string above
+                    cmd.Parameters.AddWithValue("@cpr", personIdentifier.CprNumber);
+                    conn.Open();
+
+                    bool exists = 0 < (int)cmd.ExecuteScalar();
+
+                    if (exists)
+                    {
+                        Admin.LogSuccess("Subscription of person<" + personIdentifier.UUID + "> blocked, because person was Black-Listed ");
+                        return false;
+                    }
+                    
                 }
+                // If the [blacklist] table does not exist, the person is not blacklisted, so just make the subscription.
+                catch (SqlException) { }
             }
 
             var service = CreateService<CprSubscriptionService.CprSubscriptionWebServicePortType, CprSubscriptionService.CprSubscriptionWebServicePortTypeClient>(ServiceInfo.CPRSubscription);
