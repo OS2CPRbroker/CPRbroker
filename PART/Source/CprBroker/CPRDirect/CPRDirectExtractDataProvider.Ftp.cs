@@ -86,7 +86,6 @@ namespace CprBroker.Providers.CPRDirect
 
         public FtpWebRequest CreateFtpConnection(string subPath)
         {
-            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             FtpWebRequest req = WebRequest.Create(GetFtpUrl(subPath)) as FtpWebRequest;
             req.EnableSsl = true;
             req.Credentials = new NetworkCredential(FtpUser, FtpPassword);

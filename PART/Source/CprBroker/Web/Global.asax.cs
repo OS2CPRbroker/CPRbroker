@@ -63,6 +63,20 @@ namespace CprBroker.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // Since beginning of 2019 both CPR Kontoret and ServicePlatformen requires TLS 1.2
+            // This code will always be executed, therefore this should guarentee, that TLS 1.2 is always used.
+            // For some reason the ServicePointManager cannot use TLS 1.2 unless specified.
+            // Multiple SecurityProtocolTypes can be specified like this:
+            // SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11;
+            // I have tested with the following data providers:
+            // CPR Services
+            // CPR Udtræk
+            // Service Platformen
+            // Person Master (With an Https endpoint)
+            // 
+            // And they all support TLS 1.2, if at a later point this is change to TLS 1.3 or newer, all used data providers should be tested.
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
         }
 
         protected void Session_Start(object sender, EventArgs e)

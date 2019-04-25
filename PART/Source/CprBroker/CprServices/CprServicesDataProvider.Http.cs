@@ -68,7 +68,6 @@ namespace CprBroker.Providers.CprServices
 
             using (var callContext = this.BeginCall(op, op))
             {
-                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 // Prepare the request object
                 HttpWebRequest req = WebRequest.Create(this.Address) as HttpWebRequest;
                 req.Method = WebRequestMethods.Http.Post;
