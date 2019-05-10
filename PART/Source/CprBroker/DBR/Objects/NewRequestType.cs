@@ -59,7 +59,7 @@ namespace CprBroker.DBR
             Contents = contents.PadRight(this.Length);
         }
 
-        public override DiversionResponseType Process(string dprConnectionString)
+        public override DiversionResponseType Process(string dprConnectionString, bool skipAddressIfDead)
         {
             NewResponseType ret;
             try
@@ -114,7 +114,7 @@ namespace CprBroker.DBR
                         this.SaveAsExtract(person);
 
                     // Update the DPR database
-                    objectsToInsert = this.GetDatabaseInserts(dprConnectionString, person);
+                    objectsToInsert = this.GetDatabaseInserts(dprConnectionString, person, skipAddressIfDead);
                     this.UpdateDprDatabase(dprConnectionString, objectsToInsert);
                 }
                 catch (Exception e)

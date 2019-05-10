@@ -98,7 +98,7 @@ namespace CprBroker.Tests.DBR.DiversionComparison
         public string GetEmulatedResponse(string request, string dprConnectionString)
         {
             var req = ParseRequest(request);
-            var resp = req.Process(dprConnectionString);
+            var resp = req.Process(dprConnectionString, false);
             return resp.ToString();
         }
 

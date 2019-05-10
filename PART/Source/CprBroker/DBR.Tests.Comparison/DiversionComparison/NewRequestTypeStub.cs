@@ -32,7 +32,7 @@ namespace CprBroker.Tests.DBR.DiversionComparison
             return true;
         }
 
-        public override IList<object> GetDatabaseInserts(string dprConnectionString, IndividualResponseType response)
+        public override IList<object> GetDatabaseInserts(string dprConnectionString, IndividualResponseType response, bool skipAddressIfDead = false)
         {
             //Console.WriteLine("GetDatabaseInserts");
             return base.GetDatabaseInserts(dprConnectionString, response);

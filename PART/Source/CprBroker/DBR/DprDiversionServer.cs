@@ -70,7 +70,16 @@ namespace CprBroker.DBR
                 var req = DiversionRequest.Parse(message);
                 if (req != null)
                 {
-                    var ret = req.Process(ConnectionString);
+                    bool skipAddressIfDead = false;
+                    try
+                    {
+                        skipAddressIfDead = DbrQueue.IgnoreAddressOfDeadPeople;
+                    }
+                    catch (Exception ex)
+                    {
+                        CprBroker.Engine.Local.Admin.LogError(String.Format("DBR Diversion could not get configuration, the following exception happened:{0}",ex.ToString()));
+                    }
+                    var ret = req.Process(ConnectionString, skipAddressIfDead);
                     return ret.ToBytes();
                 }
                 else
