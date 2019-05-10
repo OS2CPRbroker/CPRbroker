@@ -15,12 +15,12 @@ namespace CprBroker.DBR
 
         }
 
-        public override DiversionResponseType Process(string dprConnectionString)
+        public override DiversionResponseType Process(string dprConnectionString, bool skipAddressIfDead = false)
         {
-            return Process(dprConnectionString, false);
+            return Process(dprConnectionString, skipAddressIfDead, false);
         }
 
-        public DiversionResponseType Process(string dprConnectionString, bool nullOnUnknownError)
+        public DiversionResponseType Process(string dprConnectionString, bool skipAddressIfDead, bool nullOnUnknownError)
         {
             var myContents = Contents.Trim();
 

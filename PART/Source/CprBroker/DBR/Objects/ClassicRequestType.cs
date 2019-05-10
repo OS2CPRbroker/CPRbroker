@@ -73,10 +73,10 @@ namespace CprBroker.DBR
             UserID = "";
         }
 
-        public override DiversionResponseType Process(string dprConnectionString)
+        public override DiversionResponseType Process(string dprConnectionString, bool skipAddressIfDead = false)
         {
             // Run the new request
-            var response = base.Process(dprConnectionString) as NewResponseType;
+            var response = base.Process(dprConnectionString, skipAddressIfDead) as NewResponseType;
 
             // Convert to classic response
             return new ClassicResponseType()

@@ -85,7 +85,7 @@ namespace CprBroker.DBR
             return ret;
         }
 
-        public abstract DiversionResponseType Process(string dprConnectionString);
+        public abstract DiversionResponseType Process(string dprConnectionString, bool skipAddressIfDead);
     }
 
 }

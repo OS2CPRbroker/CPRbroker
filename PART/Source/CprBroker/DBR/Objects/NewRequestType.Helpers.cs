@@ -110,7 +110,7 @@ namespace CprBroker.DBR
             response.SaveAsExtract(enqueueConversion: true, enqueueExtractTotals: false);
         }
 
-        public virtual IList<object> GetDatabaseInserts(string dprConnectionString, IndividualResponseType response)
+        public virtual IList<object> GetDatabaseInserts(string dprConnectionString, IndividualResponseType response, bool skipAddressIfDead = false)
         {
             if (response == null)
             {
@@ -119,7 +119,7 @@ namespace CprBroker.DBR
 
             using (var dataContext = new DPRDataContext(dprConnectionString))
             {
-                CprConverter.AppendPerson(response, dataContext, CprBroker.Providers.DPR.DataRetrievalTypes.CprDirectWithSubscription);
+                CprConverter.AppendPerson(response, dataContext, CprBroker.Providers.DPR.DataRetrievalTypes.CprDirectWithSubscription,null, skipAddressIfDead);
                 return dataContext.GetChangeSet().Inserts;
             }
         }

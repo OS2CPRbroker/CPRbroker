@@ -69,7 +69,7 @@ namespace CprBroker.Tests.DBR
             public void Process_NoDataProviders_Null()
             {
                 var mock = new Mock<ClassicRequestType>();
-                mock.Setup(r => r.GetDatabaseInserts(It.IsAny<string>(), It.IsAny<IndividualResponseType>()));
+                mock.Setup(r => r.GetDatabaseInserts(It.IsAny<string>(), It.IsAny<IndividualResponseType>(), false));
                 mock.Setup(r => r.UpdateDprDatabase(It.IsAny<string>(), It.IsAny<IList<object>>()));
                 mock.Setup(r => r.LoadDataProviders<CPRDirectClientDataProvider>()).Returns(new CPRDirectClientDataProvider[] { });
                 mock.Setup(r => r.LoadDataProviders<IPutSubscriptionDataProvider>()).Returns(new IPutSubscriptionDataProvider[] { });
@@ -130,14 +130,14 @@ namespace CprBroker.Tests.DBR
                 mock.Setup(r => r.GetPerson(out prov)).Returns(
                     CprBroker.Tests.CPRDirect.Persons.Person.GetPerson(pnr)
                     );
-                mock.Setup(r => r.GetDatabaseInserts(It.IsAny<string>(), It.IsAny<IndividualResponseType>()))
+                mock.Setup(r => r.GetDatabaseInserts(It.IsAny<string>(), It.IsAny<IndividualResponseType>(), false))
                     .Callback(() => { });
 
                 mock.Setup(r => r.UpdateDprDatabase(It.IsAny<string>(), It.IsAny<IList<object>>()))
                     .Callback(() =>
                         DatabaseUpdateCalls++
                         );
-                mock.Setup(r => r.Process(It.IsAny<string>())).Callback(
+                mock.Setup(r => r.Process(It.IsAny<string>(), false)).Callback(
                 () =>
                     Console.WriteLine("Here")
                     )
