@@ -77,7 +77,7 @@ namespace CprBroker.DBR
                     }
                     catch (Exception ex)
                     {
-                        CprBroker.Engine.Local.Admin.LogError(String.Format("DBR Diversion could not get configuration, the following exception happened:{1}",ex.ToString()));
+                        CprBroker.Engine.Local.Admin.LogError(String.Format("DBR Diversion could not get configuration, the following exception happened:{0}",ex.ToString()));
                     }
                     var ret = req.Process(ConnectionString, skipAddressIfDead);
                     return ret.ToBytes();
