@@ -71,6 +71,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Queues\EnsureSubscription.cs" />
     <Compile Include="Queues\ExtractQueueItem.cs" />
     <Compile Include="Queues\DbrBaseQueue.cs" />
     <Compile Include="Extract\ExtractPersonStaging.cs" />
