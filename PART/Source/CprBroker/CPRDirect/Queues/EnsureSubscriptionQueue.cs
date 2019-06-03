@@ -29,10 +29,17 @@ namespace CprBroker.Providers.CPRDirect
             {
                 items.LoadExtractAndItems(dataContext);
 
+                // TODO: Get municipalities in subscription from config.
+
                 foreach (var person in items)
                 {
+                    
                     var response = Extract.ToIndividualResponseType(person.Extract, person.ExtractItems.AsQueryable(), Constants.DataObjectMap);
                     decimal currentMunCode = response.CurrentAddressInformation.MunicipalityCode;
+                    // TODO: Check if currentMunCode is in subscribed municipalities, if it is we dont need to check historical adresses
+
+                    // If currentMunCode is not in subscribed municipalities, but latestMunCode is, then we need to subscribe to the CPR number
+
                     HistoricalAddressType identity = new HistoricalAddressType()
                     {
                         LeavingDate = DateTime.MinValue,
