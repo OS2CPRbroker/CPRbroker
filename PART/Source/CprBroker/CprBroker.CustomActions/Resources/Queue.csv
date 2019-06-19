@@ -1,6 +1,7 @@
 ﻿TypeId;TypeName;BatchSize;MaxRetry
 100;CprBroker.Providers.CPRDirect.ExtractStagingQueue, CprBroker.Providers.CPRDirect;1000;100
 101;CprBroker.Providers.CPRDirect.PartConversionQueue, CprBroker.Providers.CPRDirect;100;100
+102;CprBroker.Providers.CPRDirect.EnsureSubscriptionQueue, CprBroker.Providers.CPRDirect;100;5
 200;CprBroker.Providers.CPRDirect.DbrBaseQueue, CprBroker.Providers.CPRDirect;100;100
 300;CprBroker.Providers.DPR.Queues.DprUpdateQueue, CprBroker.Providers.DPR;100;100
 400;CprBroker.PartInterface.Tracking.CleanupQueue, CprBroker.PartInterface.Tracking;100;100
