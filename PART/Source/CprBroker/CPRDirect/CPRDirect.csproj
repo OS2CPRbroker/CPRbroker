@@ -45,6 +45,9 @@
     <Reference Include="CprBroker.Engine">
       <HintPath>..\..\Core\Output\CprBroker.Engine.dll</HintPath>
     </Reference>
+    <Reference Include="CprBroker.PartInterface.Tracking">
+      <HintPath>..\Tracking\bin\Debug\CprBroker.PartInterface.Tracking.dll</HintPath>
+    </Reference>
     <Reference Include="CprBroker.Schemas">
       <HintPath>..\..\Core\Output\CprBroker.Schemas.dll</HintPath>
     </Reference>
@@ -71,7 +74,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Queues\EnsureSubscription.cs" />
+    <Compile Include="Queues\EnsureSubscriptionQueue.cs" />
     <Compile Include="Queues\ExtractQueueItem.cs" />
     <Compile Include="Queues\DbrBaseQueue.cs" />
     <Compile Include="Extract\ExtractPersonStaging.cs" />
