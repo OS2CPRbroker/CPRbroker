@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CprBroker.Engine;
 using CprBroker.Schemas.Part;
 using CprBroker.PartInterface;
-using CprBroker.Utilities.Config;
 
 namespace CprBroker.Providers.CPRDirect
 {
@@ -33,7 +30,7 @@ namespace CprBroker.Providers.CPRDirect
             {
                 items.LoadExtractAndItems(dataContext);
                 
-                int[] subbedMunicipalities = PartInterface.Tracking.SettingsUtilities.ExcludedMunicipalityCodes;
+                int[] subbedMunicipalities = ExcludedMunicipalityCodes();
                 HashSet<String> personsToSubscribe = new HashSet<string>();
 
                 foreach (var person in items)
@@ -79,11 +76,8 @@ namespace CprBroker.Providers.CPRDirect
             return items;
         }
 
-        public static int[] ExcludedMunicipalityCodes
+        public static int[] ExcludedMunicipalityCodes()
         {
-            get
-            {
-                ConfigManager.Current.Settings.CprBrokerConnectionString
                 return Properties.Settings.Default.ExcludedMunicipalityCodes
                     .Cast<string>()
                     .Select(v => string.Format("{0}", v).TrimStart('0', ' '))
@@ -99,7 +93,6 @@ namespace CprBroker.Providers.CPRDirect
                     .Where(v => v.HasValue && v.Value > 0)
                     .Select(v => v.Value)
                     .ToArray();
-            }
         }
     }
 }

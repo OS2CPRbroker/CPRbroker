@@ -312,5 +312,19 @@ namespace CprBroker.CustomActions
             // Add new node(s) for data providers
             CprBroker.Installers.Installation.AddKnownDataProviderTypes(types, configFilePath);
         }
+
+        public static void PatchWebsite_2_3_6(SessionAdapter session)
+        {
+            var webInstallationInfo = WebInstallationInfo.CreateFromFeature(session, "CPR");
+            var configFilePath = webInstallationInfo.GetWebConfigFilePath(EventBrokerCustomActions.PathConstants.CprBrokerWebsiteDirectoryRelativePath);
+
+            // Move ExcludedMunicipalityCodes from Tracking to CPRDirect settings
+            XmlNode node = CprBroker.Installers.Installation.RemoveXmlNode(configFilePath,"/configuration/applicationSettings/CprBroker.PartInterface.Tracking.Properties.Settings/setting[@name='ExcludedMunicipalityCodes']");
+            if (node != null)
+            {
+                CprBroker.Installers.Installation.AddConfigSectionDefinition(configFilePath, "applicationSettings", "CprBroker.PartInterface.Tracking.Properties.Settings", typeof(System.Configuration.ClientSettingsSection));
+                // TODO Add the actual node to the new config for CPR Direct.
+            }
+        }
     }
 }

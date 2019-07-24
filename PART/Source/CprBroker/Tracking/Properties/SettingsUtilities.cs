@@ -32,21 +32,7 @@ namespace CprBroker.PartInterface.Tracking
         {
             get
             {
-                return Properties.Settings.Default.ExcludedMunicipalityCodes
-                    .Cast<string>()
-                    .Select(v => string.Format("{0}", v).TrimStart('0', ' '))
-                    .Where(v => !string.IsNullOrEmpty(v))
-                    .Select(v =>
-                    {
-                        int code;
-                        if (int.TryParse(v, out code))
-                            return code;
-                        else
-                            return (int?)null;
-                    })
-                    .Where(v => v.HasValue && v.Value > 0)
-                    .Select(v => v.Value)
-                    .ToArray();
+                return Providers.CPRDirect.SettingsUtilities.ExcludedMunicipalityCodes;
             }
         }
     }

@@ -74,6 +74,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\SettingsUtilities.cs" />
     <Compile Include="Queues\EnsureSubscriptionQueue.cs" />
     <Compile Include="Queues\ExtractQueueItem.cs" />
     <Compile Include="Queues\DbrBaseQueue.cs" />
@@ -184,6 +190,7 @@
     <Content Include="Extract\Init\ExtractPersonStaging.sql" />
     <Content Include="Lookup\Authority.xml" />
     <Content Include="Lookup\GeoInformation.xml" />
+    <None Include="app.config" />
     <None Include="Lookup\Init\Authority.sql" />
     <None Include="Lookup\Init\Authority_4357.txt" />
     <Content Include="XML\CodeGeneration.txt" />
@@ -200,6 +207,10 @@
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>LookupDataContext.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="XML\Definitions.xml">
       <SubType>Designer</SubType>

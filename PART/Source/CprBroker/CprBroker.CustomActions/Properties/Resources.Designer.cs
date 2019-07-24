@@ -19,7 +19,7 @@ namespace CprBroker.CustomActions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -296,12 +296,30 @@ namespace CprBroker.CustomActions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IF NOT EXISTS (SELECT * FROM OperationType WHERE OperationTypeId = 12)
-        ///	INSERT INTO OperationType(Name, OperationTypeId) VALUES (&apos;RemovePerson&apos;,12).
+        ///   Looks up a localized string similar to IF NOT EXISTS (SELECT * FROM dbo.OperationType WHERE OperationTypeId = 12)
+        ///	INSERT INTO dbo.OperationType (Name, OperationTypeId) 
+        ///	VALUES(&apos;RemovePerson&apos;,12)
+        ///
+        ///GO
+        ///
+        ///If NOT EXISTS (SELECT * FROM dbo.[Queue] WHERE TypeName like &apos;CprBroker.PartInterface.Tracking.CleanupQueue%&apos;)
+        ///	INSERT INTO dbo.[Queue] (TypeId,TypeName,BatchSize,MaxRetry)
+        ///	VALUES(400,&apos;CprBroker.PartInterface.Tracking.CleanupQueue, CprBroker.PartInterface.Tracking&apos;, 100, 100).
         /// </summary>
         public static string PatchDatabase_2_3_0 {
             get {
                 return ResourceManager.GetString("PatchDatabase_2_3_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If NOT EXISTS (SELECT * FROM dbo.[Queue] WHERE TypeName like &apos;CprBroker.Providers.CPRDirect.EnsureSubscriptionQueue%&apos;)
+        ///	INSERT INTO dbo.[Queue] (TypeId,TypeName,BatchSize,MaxRetry)
+        ///	VALUES(102,&apos;CprBroker.Providers.CPRDirect.EnsureSubscriptionQueue, CprBroker.Providers.CPRDirect&apos;, 100, 5).
+        /// </summary>
+        public static string PatchDatabase_2_3_6 {
+            get {
+                return ResourceManager.GetString("PatchDatabase_2_3_6", resourceCulture);
             }
         }
         
@@ -325,8 +343,10 @@ namespace CprBroker.CustomActions.Properties {
         ///   Looks up a localized string similar to TypeId;TypeName;BatchSize;MaxRetry
         ///100;CprBroker.Providers.CPRDirect.ExtractStagingQueue, CprBroker.Providers.CPRDirect;1000;100
         ///101;CprBroker.Providers.CPRDirect.PartConversionQueue, CprBroker.Providers.CPRDirect;100;100
+        ///102;CprBroker.Providers.CPRDirect.EnsureSubscriptionQueue, CprBroker.Providers.CPRDirect;100;5
         ///200;CprBroker.Providers.CPRDirect.DbrBaseQueue, CprBroker.Providers.CPRDirect;100;100
-        ///300;CprBroker.Providers.DPR.Queues.DprUpdateQueue, CprBroker.Providers.DPR;100;100.
+        ///300;CprBroker.Providers.DPR.Queues.DprUpdateQueue, CprBroker.Providers.DPR;100;100
+        ///400;CprBroker.PartIn [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Queue_Csv {
             get {
