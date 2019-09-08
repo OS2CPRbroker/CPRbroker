@@ -319,12 +319,36 @@ namespace CprBroker.CustomActions
             var configFilePath = webInstallationInfo.GetWebConfigFilePath(EventBrokerCustomActions.PathConstants.CprBrokerWebsiteDirectoryRelativePath);
 
             // Move ExcludedMunicipalityCodes from Tracking to CPRDirect settings
-            XmlNode node = CprBroker.Installers.Installation.RemoveXmlNode(configFilePath,"/configuration/applicationSettings/CprBroker.PartInterface.Tracking.Properties.Settings/setting[@name='ExcludedMunicipalityCodes']");
+            XmlNode node = CprBroker.Installers.Installation.RemoveXmlNode(configFilePath, "/configuration/applicationSettings/CprBroker.PartInterface.Tracking.Properties.Settings/setting[@name='ExcludedMunicipalityCodes']");
             if (node != null)
             {
                 CprBroker.Installers.Installation.AddConfigSectionDefinition(configFilePath, "applicationSettings", "CprBroker.PartInterface.Tracking.Properties.Settings", typeof(System.Configuration.ClientSettingsSection));
                 // TODO Add the actual node to the new config for CPR Direct.
+                CprBroker.Installers.Installation.AddSectionNode("CprBroker.Providers.CPRDirect.Properties.Settings", new Dictionary<string, string>(), configFilePath, "/configuration/applicationSettings");
+                var attr = new Dictionary<string, string>();
+                attr["name"] = "ExcludedMunicipalityCodes";
+                attr["serializeAs"] = "Xml";
+                CprBroker.Installers.Installation.AddSectionNodeWithValue("setting", attr, node.InnerXml, configFilePath, "/configuration/applicationSettings/CprBroker.Providers.CPRDirect.Properties.Settings");
+                //string parent = "/configuration/applicationSettings/CprBroker.Providers.CPRDirect.Properties.Settings/setting[@name='ExcludedMunicipalityCodes']";
+                //CprBroker.Installers.Installation.AddSectionNode("value", new Dictionary<string, string>(), configFilePath, parent);
+                //CprBroker.Installers.Installation.AddSectionNode("ArrayOfString", new Dictionary<string, string>() {
+                //    { "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance" },
+                //    { "xmlns:xsd", "http://www.w3.org/2001/XMLSchema" }
+                //}, configFilePath, parent+"/value");
+                //foreach (XmlNode a in node) // foreach child in: <setting name="Excl...
+                //{
+                //    foreach (XmlNode b in a) // foreach child in: <value>
+                //    {
+                //        foreach (XmlNode c in b) // foreach child in: <ArrayOfString xmlns:xsi="http:...
+                //        {
+                //            CprBroker.Installers.Installation.AddSectionNode(c.Name, new Dictionary<string, string>(), configFilePath, parent + "/value/ArrayOfString");
+                //            // Hvordan får vi indsat værdien?
+
+                //        }
+                //    }
+                //}
             }
+
         }
     }
 }

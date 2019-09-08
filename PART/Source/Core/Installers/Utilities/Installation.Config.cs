@@ -151,6 +151,31 @@ namespace CprBroker.Installers
             return false;
         }
 
+        public static bool AddSectionNodeWithValue(string nodeName, Dictionary<string, string> attributes, string innerXml, string configFileName, string parentNodeXPath)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(configFileName);
+            XmlNode parentNode = doc.SelectSingleNode(parentNodeXPath);
+            if (parentNode != null)
+            {
+                var newNode = AppendChildNodeIfNotExists(nodeName, null, parentNode);
+                foreach (var attr in attributes)
+                {
+                    var at = newNode.Attributes[attr.Key];
+                    if (at == null)
+                    {
+                        at = doc.CreateAttribute(attr.Key);
+                        newNode.Attributes.Append(at);
+                    }
+                    at.Value = attr.Value;
+                }
+                newNode.InnerXml = innerXml;
+                doc.Save(configFileName);
+                return true;
+            }
+            return false;
+        }
+
         private static XmlNode AppendChildNodeIfNotExists(string nodeName, string existingXPath, XmlNode parentNode)
         {
             XmlNode newNode = null;
