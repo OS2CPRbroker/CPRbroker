@@ -315,14 +315,13 @@ namespace CprBroker.CustomActions
 
         public static void PatchWebsite_2_3_6(SessionAdapter session)
         {
-            var webInstallationInfo = WebInstallationInfo.CreateFromFeature(session, "CPR");
-            var configFilePath = webInstallationInfo.GetWebConfigFilePath(EventBrokerCustomActions.PathConstants.CprBrokerWebsiteDirectoryRelativePath);
+            var configFilePath = EventBrokerCustomActions.GetServiceExeConfigFullFileName(session);
 
             // Move ExcludedMunicipalityCodes from Tracking to CPRDirect settings
             XmlNode node = CprBroker.Installers.Installation.RemoveXmlNode(configFilePath, "/configuration/applicationSettings/CprBroker.PartInterface.Tracking.Properties.Settings/setting[@name='ExcludedMunicipalityCodes']");
             if (node != null)
             {
-                CprBroker.Installers.Installation.AddConfigSectionDefinition(configFilePath, "applicationSettings", "CprBroker.PartInterface.Tracking.Properties.Settings", typeof(System.Configuration.ClientSettingsSection));
+                CprBroker.Installers.Installation.AddConfigSectionDefinition(configFilePath, "applicationSettings", "CprBroker.Providers.CPRDirect.Properties.Settings", typeof(System.Configuration.ClientSettingsSection));
                 // TODO Add the actual node to the new config for CPR Direct.
                 CprBroker.Installers.Installation.AddSectionNode("CprBroker.Providers.CPRDirect.Properties.Settings", new Dictionary<string, string>(), configFilePath, "/configuration/applicationSettings");
                 var attr = new Dictionary<string, string>();

@@ -711,6 +711,11 @@ namespace CprBroker.CustomActions
                     {
                         Version = new Version(2,3,0),
                         PatchAction = () => PatchWebsite_2_3_0(session)
+                    },
+                    new WebPatchInfo()
+                    {
+                        Version = new Version(2,3,6),
+                        PatchAction = () => PatchWebsite_2_3_6(session)
                     }
                 };
 
