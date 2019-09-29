@@ -43,7 +43,7 @@ namespace CprBroker.Providers.CPRDirect
                         LeavingDate = DateTime.MinValue,
                         MunicipalityCode = 0
                     };
-                    decimal latestMunCode = response.HistoricalAddress.Aggregate((a, b) => Newest(a, b)).MunicipalityCode;
+                    decimal latestMunCode = response.HistoricalAddress.Aggregate(identity, (a, b) => Newest(a, b)).MunicipalityCode;
                     // If currentMunCode is not in subscribed municipalities, but latestMunCode is, then we need to subscribe to the CPR number
                     // TODO: make sure newest historical address is not current address
                     if (Array.Exists<int>(subbedMunicipalities, (a) => a == latestMunCode) 
@@ -51,25 +51,29 @@ namespace CprBroker.Providers.CPRDirect
                     {
                         personsToSubscribe.Add(person.PNR);
                     }
+                    // TODO: Also add person if they are moving to another cuntry
                 }
 
-                BrokerContext bc = BrokerContext.Current;
-                PartManager pm = new PartManager();
-                // Get UUIDs
-                GetUuidArrayOutputType uuids = pm.GetUuidArray(bc.UserToken, bc.ApplicationToken, personsToSubscribe.ToArray());
-                if (!StandardReturType.IsSucceeded(uuids.StandardRetur))
+                if (personsToSubscribe.Any())
                 {
-                    CprBroker.Engine.Local.Admin.LogError("There was an error getting UUIDS of persons, in EnsureSubscriptionQueue. The error was: " + uuids.StandardRetur.FejlbeskedTekst);
-                    return new ExtractQueueItem[0];
-                }
+                    BrokerContext bc = BrokerContext.Current;
+                    PartManager pm = new PartManager();
+                    // Get UUIDs
+                    GetUuidArrayOutputType uuids = pm.GetUuidArray(bc.UserToken, bc.ApplicationToken, personsToSubscribe.ToArray());
+                    if (!StandardReturType.IsSucceeded(uuids.StandardRetur))
+                    {
+                        CprBroker.Engine.Local.Admin.LogError("There was an error getting UUIDS of persons, in EnsureSubscriptionQueue. The error was: " + uuids.StandardRetur.FejlbeskedTekst);
+                        return new ExtractQueueItem[0];
+                    }
 
-                // Subscribe persons
-                Guid[] guids = uuids.UUID.Select( u => Guid.Parse(u)).ToArray();
-                BasicOutputType<bool> putsubs = pm.PutSubscription(bc.UserToken, bc.ApplicationToken, guids);
-                if (!StandardReturType.IsSucceeded(putsubs.StandardRetur))
-                {
-                    CprBroker.Engine.Local.Admin.LogError("There was an error putting subscriptions of persons, in EnsureSubscriptionQueue. The error was: " + putsubs.StandardRetur.FejlbeskedTekst);
-                    return new ExtractQueueItem[0];
+                    // Subscribe persons
+                    Guid[] guids = uuids.UUID.Select(u => Guid.Parse(u)).ToArray();
+                    BasicOutputType<bool> putsubs = pm.PutSubscription(bc.UserToken, bc.ApplicationToken, guids);
+                    if (!StandardReturType.IsSucceeded(putsubs.StandardRetur))
+                    {
+                        CprBroker.Engine.Local.Admin.LogError("There was an error putting subscriptions of persons, in EnsureSubscriptionQueue. The error was: " + putsubs.StandardRetur.FejlbeskedTekst);
+                        return new ExtractQueueItem[0];
+                    }
                 }
             }
 
