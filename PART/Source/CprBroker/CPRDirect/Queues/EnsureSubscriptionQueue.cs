@@ -45,7 +45,6 @@ namespace CprBroker.Providers.CPRDirect
                     };
                     decimal latestMunCode = response.HistoricalAddress.Aggregate(identity, (a, b) => Newest(a, b)).MunicipalityCode;
                     // If currentMunCode is not in subscribed municipalities, but latestMunCode is, then we need to subscribe to the CPR number
-                    // TODO: make sure newest historical address is not current address
                     if (Array.Exists<int>(subbedMunicipalities, (a) => a == latestMunCode) 
                         && !Array.Exists<int>(subbedMunicipalities, (a) => a == currentMunCode))
                     {
