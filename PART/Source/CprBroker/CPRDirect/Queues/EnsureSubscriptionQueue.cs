@@ -56,31 +56,11 @@ namespace CprBroker.Providers.CPRDirect
                     // 'IndividualResponseType.PersonInformation' contains data from CPR Direkte's record type '001'.
                     int status = Convert.ToInt32(response.PersonInformation.Status);
 
-                    /*
-                     * Statuskoder for record type 001: 
-                     * 01 = Aktiv, bopæl i dansk folkeregister
-                     * 03 = Aktiv, speciel vejkode(9900 - 9999) i dansk folkeregister
-                     * 05 = Aktiv, bopæl i grønlandsk folkeregister
-                     * 07 = Aktiv, speciel vejkode(9900 - 9999) i grønlandsk folkeregister
-                     * 20 = Inaktiv, uden bopæl i dansk/ grønlandsk folkeregister men tildelt personnummer af skattehensyn(kommunekoderne 0010, 0011, 0012 og 0019)
-                     * 30 = Inaktiv, anulleret personnummer
-                     * 50 = Inaktiv, slettet personnummer ved dobbeltnummer
-                     * 60 = Inaktiv, ændret personnummer ved ændring af fødselsdato og køn
-                     * 70 = Inaktiv, forsvundet
-                     * 80 = Inaktiv,udrejst
-                     * 90 = Inaktiv, død 
-                     */
-
-                    if (status == 20 || status == 70 || status == 80) 
+                    // response.PersonInformation.StatusStartDate inden for et par(?) dage
+                    if (status == 80 || status == 20)
                     {
                         personsToSubscribe.Add(person.PNR);
                     }
-                    else if (status == 30 || status == 50 || status == 60 || status == 90)
-                    {
-                        personsToSubscribe.Remove(person.PNR);
-                    }
-
-                    
                 }
 
                 if (personsToSubscribe.Any())
