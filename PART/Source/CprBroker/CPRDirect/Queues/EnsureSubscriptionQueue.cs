@@ -33,18 +33,15 @@ namespace CprBroker.Providers.CPRDirect
                 int[] subbedMunicipalities = ExcludedMunicipalityCodes();
                 HashSet<String> personsToSubscribe = new HashSet<string>();
 
-                PartManager partManager = new PartManager();
+                PartManager pm = new PartManager();
+                BrokerContext bc = BrokerContext.Current;
 
                 foreach (var person in items)
                 {
                     try
                     {
                         // Used as citizen reference in log.
-                        GetUuidOutputType UUIDOutput = partManager.GetUuid(
-                        CprBroker.Utilities.Constants.EventBrokerApplicationToken.ToString(),
-                        CprBroker.Utilities.Constants.BaseApplicationToken.ToString(),
-                        person.PNR
-                        );
+                        GetUuidOutputType UUIDOutput = pm.GetUuid(bc.UserToken.ToString(), bc.ApplicationToken.ToString(), person.PNR);
 
                         var response = Extract.ToIndividualResponseType(person.Extract, person.ExtractItems.AsQueryable(), Constants.DataObjectMap);
 
@@ -102,8 +99,6 @@ namespace CprBroker.Providers.CPRDirect
 
                 if (personsToSubscribe.Any())
                 {
-                    BrokerContext bc = BrokerContext.Current;
-                    PartManager pm = new PartManager();
                     // Get UUIDs
                     GetUuidArrayOutputType uuids = pm.GetUuidArray(bc.UserToken, bc.ApplicationToken, personsToSubscribe.ToArray());
                     if (!StandardReturType.IsSucceeded(uuids.StandardRetur))
