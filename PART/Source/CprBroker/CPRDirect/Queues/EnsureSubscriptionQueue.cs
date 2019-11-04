@@ -37,37 +37,46 @@ namespace CprBroker.Providers.CPRDirect
 
                 foreach (var person in items)
                 {
-                    GetUuidOutputType UUIDOutput = partManager.GetUuid(
+                    try
+                    {
+                        // Used as citizen reference in log.
+                        GetUuidOutputType UUIDOutput = partManager.GetUuid(
                         CprBroker.Utilities.Constants.EventBrokerApplicationToken.ToString(),
                         CprBroker.Utilities.Constants.BaseApplicationToken.ToString(),
                         person.PNR
                         );
 
-                    var response = Extract.ToIndividualResponseType(person.Extract, person.ExtractItems.AsQueryable(), Constants.DataObjectMap);
-                    decimal currentMunCode = response.CurrentAddressInformation.MunicipalityCode;
+                        var response = Extract.ToIndividualResponseType(person.Extract, person.ExtractItems.AsQueryable(), Constants.DataObjectMap);
 
-                    HistoricalAddressType identity = new HistoricalAddressType()
-                    {
-                        LeavingDate = DateTime.MinValue,
-                        MunicipalityCode = 0
-                    };
-                    decimal latestMunCode = response.HistoricalAddress.Aggregate(identity, (a, b) => Newest(a, b)).MunicipalityCode;
-                    // If currentMunCode is not in subscribed municipalities, but latestMunCode is, then we need to subscribe to the CPR number
-                    if (Array.Exists<int>(subbedMunicipalities, (a) => a == latestMunCode) 
-                        && !Array.Exists<int>(subbedMunicipalities, (a) => a == currentMunCode))
-                    {
-                        personsToSubscribe.Add(person.PNR);
-                        string logMsg = string.Format("Subscription put due to leaving municipality for citizen: {0}", UUIDOutput.UUID);
-                        CprBroker.Engine.Local.Admin.LogSuccess(logMsg);
-                    }
+                        /*
+                        * ****************************************************
+                        * ***** Checking if the municipality has changed *****
+                        * ****************************************************
+                        */
 
-                    /*
-                    * *********************************************************
-                    * ***** If the person is reported leaving the country *****
-                    * *********************************************************
-                    */
-                    try
-                    {
+                        decimal currentMunCode = response.CurrentAddressInformation.MunicipalityCode;
+
+                        HistoricalAddressType identity = new HistoricalAddressType()
+                        {
+                            LeavingDate = DateTime.MinValue,
+                            MunicipalityCode = 0
+                        };
+                        decimal latestMunCode = response.HistoricalAddress.Aggregate(identity, (a, b) => Newest(a, b)).MunicipalityCode;
+                        // If currentMunCode is not in subscribed municipalities, but latestMunCode is, then we need to subscribe to the CPR number
+                        if (Array.Exists<int>(subbedMunicipalities, (a) => a == latestMunCode) 
+                            && !Array.Exists<int>(subbedMunicipalities, (a) => a == currentMunCode))
+                        {
+                            personsToSubscribe.Add(person.PNR);
+                            string logMsg = string.Format("Subscription put due to leaving municipality for citizen: {0}", UUIDOutput.UUID);
+                            CprBroker.Engine.Local.Admin.LogSuccess(logMsg);
+                        }
+
+                        /*
+                        * *********************************************************
+                        * ***** If the person is reported leaving the country *****
+                        * *********************************************************
+                        */
+                    
                         // 'IndividualResponseType.PersonInformation' contains data from CPR Direkte's record type '001'.
                         int status = Convert.ToInt32(response.PersonInformation.Status);
 
@@ -78,7 +87,7 @@ namespace CprBroker.Providers.CPRDirect
                             CprBroker.Engine.Local.Admin.LogSuccess(logMsg);
                         }
 
-                        if (status == 20) // "inactive, without address in Denmark, or Greenland, but has cprno. due tax reasons".
+                        if (status == 20) // "inactive, without address in Denmark, or Greenland, but has cprno. due to tax reasons".
                         {
                             personsToSubscribe.Add(person.PNR);
                             string logMsg = string.Format("Subscription put due to Status code 20 for citizen: {0}", UUIDOutput.UUID);
