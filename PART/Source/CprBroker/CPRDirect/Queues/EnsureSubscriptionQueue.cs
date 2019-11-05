@@ -64,7 +64,7 @@ namespace CprBroker.Providers.CPRDirect
                             && !Array.Exists<int>(subbedMunicipalities, (a) => a == currentMunCode))
                         {
                             personsToSubscribe.Add(person.PNR);
-                            string logMsg = string.Format("Subscription put due to leaving municipality for citizen: {0}", UUIDOutput.UUID);
+                            string logMsg = string.Format("Subscription put due to change of municipality code for citizen: {0}", UUIDOutput.UUID);
                             CprBroker.Engine.Local.Admin.LogSuccess(logMsg);
                         }
 
