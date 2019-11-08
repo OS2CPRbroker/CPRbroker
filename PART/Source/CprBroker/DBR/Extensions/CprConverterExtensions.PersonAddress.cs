@@ -55,8 +55,10 @@ namespace CprBroker.DBR.Extensions
     {
         public static PersonAddress ToDpr(this CurrentAddressWrapper currentAddress, DPRDataContext dataContext, PersonInformationType personInformation)
         {
-            PersonAddress pa = new PersonAddress();
-            pa.PNR = Decimal.Parse(currentAddress.CurrentAddressInformation.PNR);
+            PersonAddress pa = new PersonAddress
+            {
+                PNR = Decimal.Parse(currentAddress.CurrentAddressInformation.PNR)
+            };
 
             if (currentAddress.CurrentAddressInformation.RelocationDate.HasValue)
                 pa.CprUpdateDate = CprBroker.Utilities.Dates.DateToDecimal(currentAddress.CurrentAddressInformation.RelocationDate.Value, 12);
@@ -191,8 +193,10 @@ namespace CprBroker.DBR.Extensions
 
         public static PersonAddress ToDpr(this HistoricalAddressType historicalAddress, DPRDataContext dataContext)
         {
-            PersonAddress pa = new PersonAddress();
-            pa.PNR = Decimal.Parse(historicalAddress.PNR);
+            PersonAddress pa = new PersonAddress
+            {
+                PNR = Decimal.Parse(historicalAddress.PNR)
+            };
             if (historicalAddress.RelocationDate.HasValue)
                 pa.CprUpdateDate = CprBroker.Utilities.Dates.DateToDecimal(historicalAddress.RelocationDate.Value, 12);
             pa.MunicipalityCode = historicalAddress.MunicipalityCode;
@@ -216,12 +220,14 @@ namespace CprBroker.DBR.Extensions
             else
                 pa.GreenlandConstructionNumber = null;
 
+            /******************* POSTNUMMER ! *******************/
             var postCode = PostDistrict.GetPostCode(dataContext.Connection.ConnectionString, historicalAddress.MunicipalityCode, historicalAddress.StreetCode, historicalAddress.HouseNumber);
             if (postCode.HasValue)
             {
                 pa.PostCode = postCode.Value;
             }
 
+            /******************* KOMMUNENAVN ! *******************/
             if (IsValidAddress(dataContext, historicalAddress.MunicipalityCode, historicalAddress.StreetCode, historicalAddress.HouseNumber))
                 pa.MunicipalityName = CprBroker.Providers.CPRDirect.Authority.GetAuthorityNameByCode(pa.MunicipalityCode.ToString());
 
@@ -259,6 +265,7 @@ namespace CprBroker.DBR.Extensions
             else
                 pa.CareOfName = null;
 
+            /******************* BYNAVN ! *******************/
             pa.Town = City.GetCityName(dataContext.Connection.ConnectionString, historicalAddress.MunicipalityCode, historicalAddress.StreetCode, historicalAddress.HouseNumber);
 
             pa.Location = null; //Find in GoeLookup, based on street code and house number
