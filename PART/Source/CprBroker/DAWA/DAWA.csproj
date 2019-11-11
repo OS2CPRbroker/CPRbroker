@@ -7,8 +7,8 @@
     <ProjectGuid>{AD5AC707-3492-4C7F-8A57-E0EAFCE3544C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DAWA</RootNamespace>
-    <AssemblyName>DAWA</AssemblyName>
+    <RootNamespace>CprBroker.Providers.DAWA</RootNamespace>
+    <AssemblyName>CprBroker.Providers.DAWA</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CprBroker.Engine">
+      <HintPath>..\..\Core\Engine\bin\Debug\CprBroker.Engine.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
