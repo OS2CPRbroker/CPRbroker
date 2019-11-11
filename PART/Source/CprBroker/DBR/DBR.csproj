@@ -111,6 +111,10 @@
       <Project>{EDDB494D-782D-4D45-8599-633057B9B203}</Project>
       <Name>CPRDirect</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DAWA\DAWA.csproj">
+      <Project>{ad5ac707-3492-4c7f-8a57-e0eafce3544c}</Project>
+      <Name>DAWA</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DPR\DPR.csproj">
       <Project>{F98E5179-88E3-404E-83BE-54F0A3E7DBC0}</Project>
       <Name>DPR</Name>
