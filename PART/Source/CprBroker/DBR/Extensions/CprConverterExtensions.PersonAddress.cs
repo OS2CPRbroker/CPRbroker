@@ -45,9 +45,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CprBroker.DAWA;
 using CprBroker.Providers.CPRDirect;
 using CprBroker.Providers.DPR;
-using CprBroker.Providers.DAWA;
 
 namespace CprBroker.DBR.Extensions
 {

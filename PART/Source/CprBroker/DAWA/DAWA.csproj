@@ -7,8 +7,8 @@
     <ProjectGuid>{AD5AC707-3492-4C7F-8A57-E0EAFCE3544C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CprBroker.Providers.DAWA</RootNamespace>
-    <AssemblyName>CprBroker.Providers.DAWA</AssemblyName>
+    <RootNamespace>CprBroker.DAWA</RootNamespace>
+    <AssemblyName>CprBroker.DAWA</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

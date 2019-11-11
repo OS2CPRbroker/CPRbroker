@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 
-namespace CprBroker.Providers.DAWA
+namespace CprBroker.DAWA
 {
     public class DawaDataProviderAdresser
     {
@@ -48,7 +48,7 @@ namespace CprBroker.Providers.DAWA
             }
             catch (Exception ex)
             {
-                Engine.Local.Admin.LogError(ex.ToString());
+                //Engine.Local.Admin.LogError(ex.ToString());
                 return null;
             }
             
@@ -75,7 +75,7 @@ namespace CprBroker.Providers.DAWA
             }
             catch (Exception ex)
             {
-                Engine.Local.Admin.LogError(ex.ToString());
+                //Engine.Local.Admin.LogError(ex.ToString());
             }
             return result;
         }
@@ -120,7 +120,7 @@ namespace CprBroker.Providers.DAWA
                 {
                     nonValidKeysOrValues++;
                     string logMsg = string.Format("Input not valid. KEY = {0} and Value = {1}", pair.Key, pair.Value);
-                    Engine.Local.Admin.LogError(logMsg);
+                    //Engine.Local.Admin.LogError(logMsg);
                 }
             }
             return (nonValidKeysOrValues == 0 ? true : false);
