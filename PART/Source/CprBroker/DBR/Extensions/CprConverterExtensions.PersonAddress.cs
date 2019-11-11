@@ -24,6 +24,7 @@
  * Contributor(s):
  * Beemen Beshara
  * Dennis Amdi Skov Isaksen
+ * Heini Leander Ovason
  *
  * The code is currently governed by IT- og Telestyrelsen / Danish National
  * IT and Telecom Agency
@@ -206,7 +207,7 @@ namespace CprBroker.DBR.Extensions
                 {"husnr", historicalAddress.HouseNumber.ToString()}
             };
             // Fetching citizen's current address data from DAWA.
-            Dictionary<string, string> dawaCurrentAddr = DawaDataProviderAdresser.LookupAddress(currentAddrDict);
+            Dictionary<string, string> dawaCurrentAddr = DawaAdresser.LookupAddress(currentAddrDict);
 
             if (historicalAddress.RelocationDate.HasValue)
                 pa.CprUpdateDate = CprBroker.Utilities.Dates.DateToDecimal(historicalAddress.RelocationDate.Value, 12);
