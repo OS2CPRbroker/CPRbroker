@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CprBroker.Engine.Local;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,8 +16,7 @@ namespace CprBroker.DAWA
         {
             if (inputDict != null && ValidateParameterKeysAndValues(inputDict))
             {
-                string serviceResponse = CallAddressService(inputDict);
-                return ParseResponse(serviceResponse);
+                return ParseResponse(CallAddressService(inputDict));
             }
             else
             {
@@ -48,7 +48,7 @@ namespace CprBroker.DAWA
             }
             catch (Exception ex)
             {
-                //Engine.Local.Admin.LogError(ex.ToString());
+                Admin.LogError(ex.ToString());
                 return null;
             }
             
@@ -75,7 +75,7 @@ namespace CprBroker.DAWA
             }
             catch (Exception ex)
             {
-                //Engine.Local.Admin.LogError(ex.ToString());
+                Admin.LogError(ex.ToString());
             }
             return result;
         }
@@ -120,7 +120,7 @@ namespace CprBroker.DAWA
                 {
                     nonValidKeysOrValues++;
                     string logMsg = string.Format("Input not valid. KEY = {0} and Value = {1}", pair.Key, pair.Value);
-                    //Engine.Local.Admin.LogError(logMsg);
+                    Admin.LogError(logMsg);
                 }
             }
             return (nonValidKeysOrValues == 0 ? true : false);
