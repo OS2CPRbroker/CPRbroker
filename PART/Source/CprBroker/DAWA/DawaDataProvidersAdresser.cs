@@ -4,20 +4,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 
-namespace DAWA
+namespace CprBroker.Providers.DAWA
 {
-    public class DawaDataProvidersAdresser
+    public class DawaDataProviderAdresser
     {
         private const string URL = "https://dawa.aws.dk";
         private const string SERVICE = "adresser";
 
-        /* PENDING:
-         * try/catch blocks and logging.
-         */
-
         public static Dictionary<string, string> LookupAddress(Dictionary<string, string> inputDict)
         {
-            if(ValidateParameterKeysAndValues(inputDict))
+            if (inputDict != null && ValidateParameterKeysAndValues(inputDict))
             {
                 string serviceResponse = CallAddressService(inputDict);
                 return ParseResponse(serviceResponse);
@@ -28,7 +24,7 @@ namespace DAWA
             }
         }
 
-        public static Dictionary<string, string> ParseResponse(string serviceResponseJSON)
+        private static Dictionary<string, string> ParseResponse(string serviceResponseJSON)
         {
             try
             {
@@ -36,43 +32,55 @@ namespace DAWA
 
                 string postCode = responseDict[0]["adgangsadresse"]["postnummer"]["nr"];
                 string munName = responseDict[0]["adgangsadresse"]["kommune"]["navn"];
-                string cityName = responseDict[0]["adgangsadresse"]["postnummer"]["navn"];
+                string townName = responseDict[0]["adgangsadresse"]["postnummer"]["navn"];
+                string streetCode = responseDict[0]["adgangsadresse"]["vejstykke"]["kode"];
 
                 Dictionary<string, string> sanitezedDict = new Dictionary<string, string>()
                 {
                     {"postCode", postCode},
                     {"munName", munName},
-                    {"cityName", cityName}
+                    {"town", townName},
+                    {"streetCode", streetCode}
                 };
  
                 return sanitezedDict;
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
+                Engine.Local.Admin.LogError(ex.ToString());
                 return null;
             }
             
         }
 
-        public static string CallAddressService(Dictionary<string, string> inputDict)
+        private static string CallAddressService(Dictionary<string, string> inputDict)
         {
             string url = string.Format("{0}/{1}?", URL, SERVICE);
-            string urlParams = DawaDataProvidersAdresser.ConstructUrlParameters(inputDict);
+            string urlParams = DawaDataProviderAdresser.ConstructUrlParameters(inputDict);
             string requestUrl = string.Format("{0}{1}", url, urlParams);
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestUrl);
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            using (Stream stream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(stream))
+            string result = null;
+            try
             {
-                return reader.ReadToEnd();
-            }
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestUrl);
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (Stream stream = response.GetResponseStream())
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    result = reader.ReadToEnd();
+                }
+            }
+            catch (Exception ex)
+            {
+                Engine.Local.Admin.LogError(ex.ToString());
+            }
+            return result;
         }
 
-        public static string ConstructUrlParameters(Dictionary<string, string> inputDict)
+        private static string ConstructUrlParameters(Dictionary<string, string> inputDict)
         {
             string urlParameters = "";
             foreach (var pair in inputDict)
@@ -84,9 +92,10 @@ namespace DAWA
 
         }
 
-        public static bool ValidateParameterKeysAndValues(Dictionary<string, string> input)
+        private static bool ValidateParameterKeysAndValues(Dictionary<string, string> input)
         {
             // See https://dawa.aws.dk/dok/api/adresse for additional keys not present in the Dictionary.
+            // enum of keys instead...?
             Dictionary<string, string> paramNamesAndDescriptions = new Dictionary<string, string>()
             {
                 {"id", "Adressens unikke id, f.eks. 0a3f5095-45ec-32b8-e044-0003ba298018. (Flerværdisøgning mulig)."},
@@ -110,6 +119,8 @@ namespace DAWA
                 if (!paramNamesAndDescriptions.ContainsKey(pair.Key) && !string.IsNullOrEmpty(pair.Value))
                 {
                     nonValidKeysOrValues++;
+                    string logMsg = string.Format("Input not valid. KEY = {0} and Value = {1}", pair.Key, pair.Value);
+                    Engine.Local.Admin.LogError(logMsg);
                 }
             }
             return (nonValidKeysOrValues == 0 ? true : false);
