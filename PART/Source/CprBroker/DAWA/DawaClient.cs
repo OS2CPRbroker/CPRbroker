@@ -50,24 +50,28 @@ using System.Net;
 
 namespace CprBroker.DAWA
 {
-    public class DawaAdresser
+    public class DawaClient
     {
         private const string URL = "https://dawa.aws.dk";
-        private const string SERVICE = "adresser";
 
-        public static Dictionary<string, string> LookupAddress(Dictionary<string, string> inputDict)
+        public static string Lookup(string serviceName, Dictionary<string, string> inputDict)
         {
-            if (inputDict != null && ValidateParameterKeysAndValues(inputDict))
+            if (inputDict != null 
+                && ValidateParameterKeysAndValues(inputDict) 
+                && ValidateServiceName(serviceName)
+                )
             {
-                return ParseResponse(CallAddressService(inputDict));
+                return CallService(serviceName, inputDict);
             }
             else
             {
+                Admin.LogError("DawaClient.Lookup returned NULL");
+                //Console.WriteLine("DawaClient.Lookup returned NULL");
                 return null;
             }
         }
 
-        private static Dictionary<string, string> ParseResponse(string serviceResponseJSON)
+        public static Dictionary<string, string> ParseAddressResponse(string serviceResponseJSON)
         {
             try
             {
@@ -92,15 +96,45 @@ namespace CprBroker.DAWA
             catch (Exception ex)
             {
                 Admin.LogError(ex.ToString());
+                //Console.WriteLine(ex.ToString());
                 return null;
             }
             
         }
 
-        private static string CallAddressService(Dictionary<string, string> inputDict)
+        public static Dictionary<string, string> ParseMunicipalResponse(string serviceResponseJSON)
         {
-            string url = string.Format("{0}/{1}?", URL, SERVICE);
-            string urlParams = DawaAdresser.ConstructUrlParameters(inputDict);
+            try
+            {
+                dynamic responseDict = JsonConvert.DeserializeObject(serviceResponseJSON);
+
+                string munName = responseDict[0]["navn"];
+                string regionName = responseDict[0]["region"]["navn"];
+                string regionCode = responseDict[0]["region"]["kode"];
+
+                Dictionary<string, string> sanitezedDict = new Dictionary<string, string>()
+                {
+                    {"munName", munName},
+                    {"regionName", regionName},
+                    {"regionCode", regionCode}
+                };
+
+                return sanitezedDict;
+
+            }
+            catch (Exception ex)
+            {
+                Admin.LogError(ex.ToString());
+                //Console.WriteLine(ex.ToString());
+                return null;
+            }
+
+        }
+
+        private static string CallService(string serviceName, Dictionary<string, string> inputDict)
+        {
+            string url = string.Format("{0}/{1}?", URL, serviceName);
+            string urlParams = DawaClient.ConstructUrlParameters(inputDict);
             string requestUrl = string.Format("{0}{1}", url, urlParams);
 
             string result = null;
@@ -119,6 +153,7 @@ namespace CprBroker.DAWA
             catch (Exception ex)
             {
                 Admin.LogError(ex.ToString());
+                //Console.WriteLine(ex.ToString());
             }
             return result;
         }
@@ -164,9 +199,31 @@ namespace CprBroker.DAWA
                     nonValidKeysOrValues++;
                     string logMsg = string.Format("Input not valid. KEY = {0} and Value = {1}", pair.Key, pair.Value);
                     Admin.LogError(logMsg);
+                    //Console.WriteLine(logMsg);
                 }
             }
             return (nonValidKeysOrValues == 0 ? true : false);
+        }
+
+        public static bool ValidateServiceName(string serviceName)
+        {
+            List<string> validServiceNames = new List<string>() { "adresser", "kommuner" };
+            string input = serviceName.ToLower();
+            bool result = false;
+            foreach (string name in validServiceNames)
+            {
+                if(input == name)
+                {
+                    result = true;
+                }
+            }
+            if (!result)
+            {
+                string logMsg = string.Format("Service name not valid. Input = {0}", serviceName);
+                Admin.LogError(logMsg);
+                //Console.WriteLine(logMsg);
+            }
+            return (result == true ? true : false);
         }
     }
 }

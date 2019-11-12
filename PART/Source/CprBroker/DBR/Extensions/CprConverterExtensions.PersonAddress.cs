@@ -61,11 +61,25 @@ namespace CprBroker.DBR.Extensions
                 PNR = Decimal.Parse(currentAddress.CurrentAddressInformation.PNR)
             };
 
+            Dictionary<string, string> currentAddrDict = new Dictionary<string, string>()
+            {
+                {"kommunekode", currentAddress.CurrentAddressInformation.MunicipalityCode.ToString()},
+                {"vejkode", currentAddress.CurrentAddressInformation.StreetCode.ToString()},
+                {"husnr", currentAddress.CurrentAddressInformation.HouseNumber.ToString()}
+            };
+            string addressServiceResponseJSON = DawaClient.Lookup("adresser", currentAddrDict);
+            Dictionary<string, string> dawaCurrentAddr = DawaClient.ParseAddressResponse(addressServiceResponseJSON);
+
             if (currentAddress.CurrentAddressInformation.RelocationDate.HasValue)
                 pa.CprUpdateDate = CprBroker.Utilities.Dates.DateToDecimal(currentAddress.CurrentAddressInformation.RelocationDate.Value, 12);
 
             pa.MunicipalityCode = currentAddress.CurrentAddressInformation.MunicipalityCode;
-            pa.StreetCode = currentAddress.CurrentAddressInformation.StreetCode;
+            //pa.StreetCode = currentAddress.CurrentAddressInformation.StreetCode;
+            string strCode = dawaCurrentAddr["streetCode"];
+            if (!string.IsNullOrEmpty(strCode))
+            {
+                pa.StreetCode = Convert.ToDecimal(strCode);
+            }
             pa.HouseNumber = currentAddress.CurrentAddressInformation.HouseNumber.NullIfEmpty();
 
             if (!string.IsNullOrEmpty(currentAddress.CurrentAddressInformation.Floor))
@@ -90,8 +104,15 @@ namespace CprBroker.DBR.Extensions
 
             pa.PostCode = currentAddress.ClearWrittenAddress.PostCode;
 
+            /*
             if (IsValidAddress(dataContext, currentAddress.ClearWrittenAddress.MunicipalityCode, currentAddress.ClearWrittenAddress.StreetCode, currentAddress.ClearWrittenAddress.HouseNumber))
                 pa.MunicipalityName = CprBroker.Providers.CPRDirect.Authority.GetAuthorityNameByCode(pa.MunicipalityCode.ToString());
+            */
+            string munName = dawaCurrentAddr["munName"];
+            if (!string.IsNullOrEmpty(munName))
+            {
+                pa.MunicipalityName = munName;
+            }
 
             if (!string.IsNullOrEmpty(currentAddress.ClearWrittenAddress.StreetAddressingName))
                 pa.StreetAddressingName = currentAddress.ClearWrittenAddress.StreetAddressingName;
@@ -199,7 +220,6 @@ namespace CprBroker.DBR.Extensions
                 PNR = Decimal.Parse(historicalAddress.PNR)
             };
 
-            // Search paramters for DawaDataProviderAdresser.LookupAddress()
             Dictionary<string, string> currentAddrDict = new Dictionary<string, string>()
             {
                 {"kommunekode", historicalAddress.MunicipalityCode.ToString()},
@@ -207,17 +227,18 @@ namespace CprBroker.DBR.Extensions
                 {"husnr", historicalAddress.HouseNumber.ToString()}
             };
             // Fetching citizen's current address data from DAWA.
-            Dictionary<string, string> dawaCurrentAddr = DawaAdresser.LookupAddress(currentAddrDict);
+            // Returns NULL if something goes wrong. 
+            string addressServiceResponseJSON = DawaClient.Lookup("adresser", currentAddrDict);
+            Dictionary<string, string> dawaCurrentAddr = DawaClient.ParseAddressResponse(addressServiceResponseJSON);
 
             if (historicalAddress.RelocationDate.HasValue)
                 pa.CprUpdateDate = CprBroker.Utilities.Dates.DateToDecimal(historicalAddress.RelocationDate.Value, 12);
             pa.MunicipalityCode = historicalAddress.MunicipalityCode;
 
-            /*pa.StreetCode = historicalAddress.StreetCode;*/
-            string streetCode = dawaCurrentAddr["streetCode"];
-            if (!string.IsNullOrEmpty(streetCode))
+            string strCode = dawaCurrentAddr["streetCode"];
+            if (!string.IsNullOrEmpty(strCode))
             {
-                pa.PostCode = Convert.ToDecimal(streetCode);
+                pa.StreetCode = Convert.ToDecimal(strCode);
             }
             
             pa.HouseNumber = historicalAddress.HouseNumber.NullIfEmpty();
