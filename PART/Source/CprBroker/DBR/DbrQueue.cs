@@ -285,10 +285,13 @@ namespace CprBroker.DBR
                     .Key ?? 0;
             }
 
+            // Preparing data for DAWA request
             Dictionary<string, string> urlParamDict = new Dictionary<string, string>()
             {
                 {"kommunekode", "0151"},
             };
+
+            // Calling DAWA
             string kommuneServiceResponseJSON = DawaClient.Lookup("kommuner", urlParamDict);
             Dictionary<string, string> result = DawaClient.ParseMunicipalResponse(kommuneServiceResponseJSON);
 
