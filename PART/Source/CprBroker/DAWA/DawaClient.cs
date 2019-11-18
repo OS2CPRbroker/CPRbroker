@@ -81,16 +81,26 @@ namespace CprBroker.DAWA
                 string munName = responseDict[0]["adgangsadresse"]["kommune"]["navn"];
                 string townName = responseDict[0]["adgangsadresse"]["postnummer"]["navn"];
                 string streetCode = responseDict[0]["adgangsadresse"]["vejstykke"]["kode"];
+                string floor = responseDict[0]["etage"];
+                string door = responseDict[0]["dør"];
+                string houseNo = responseDict[0]["adgangsadresse"]["husnr"];
+                string addrDescr = responseDict[0]["adressebetegnelse"];
+                string dawaUuid = responseDict[0]["id"];
 
-                Dictionary<string, string> sanitezedDict = new Dictionary<string, string>()
+                Dictionary<string, string> sanitizedDict = new Dictionary<string, string>()
                 {
                     {"postCode", postCode},
                     {"munName", munName},
                     {"town", townName},
-                    {"streetCode", streetCode}
+                    {"streetCode", streetCode},
+                    {"floor", floor},
+                    {"door", door},
+                    {"houseNo", houseNo },
+                    {"addrDescr", addrDescr},
+                    {"dawaUuid", dawaUuid}
                 };
  
-                return sanitezedDict;
+                return sanitizedDict;
 
             }
             catch (Exception ex)
@@ -225,5 +235,6 @@ namespace CprBroker.DAWA
             }
             return (result == true ? true : false);
         }
+
     }
 }
