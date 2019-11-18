@@ -23,6 +23,7 @@
  *
  * Contributor(s):
  * Beemen Beshara
+ * Heini Leander Ovason
  *
  * The code is currently governed by IT- og Telestyrelsen / Danish National
  * IT and Telecom Agency
@@ -64,7 +65,7 @@ namespace CprBroker.DBR
             DiversionRequest ret = null;
 
             var errorRequest = new ErrorRequestType(str);
-            var errorResult = errorRequest.Process("", true);
+            var errorResult = errorRequest.Process("", true, true);
 
             if (errorResult == null)
             {
