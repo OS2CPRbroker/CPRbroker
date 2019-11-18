@@ -207,11 +207,12 @@ namespace CprBroker.DBR.Extensions
             return pa;
         }
 
-        private static bool IsValidAddress(DPRDataContext dataContext, decimal municipalityCode, decimal streetCode, string houseNumber)
-        {
-            var ret = PostDistrict.GetPostText(dataContext.Connection.ConnectionString, municipalityCode, streetCode, houseNumber);
-            return ret != null;
-        }
+        // Deprecated due to address data in DPR Emulation database not being updated with new addresses automatically.
+        //private static bool IsValidAddress(DPRDataContext dataContext, decimal municipalityCode, decimal streetCode, string houseNumber)
+        //{
+        //    var ret = PostDistrict.GetPostText(dataContext.Connection.ConnectionString, municipalityCode, streetCode, houseNumber);
+        //    return ret != null;
+        //}
 
         public static PersonAddress ToDpr(this HistoricalAddressType historicalAddress, DPRDataContext dataContext)
         {
