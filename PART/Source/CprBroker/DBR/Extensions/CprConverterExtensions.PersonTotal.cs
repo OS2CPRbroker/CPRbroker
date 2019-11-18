@@ -24,6 +24,7 @@
  * Contributor(s):
  * Beemen Beshara
  * Dennis Amdi Skov Isaksen
+ * Heini Leander Ovason
  *
  * The code is currently governed by IT- og Telestyrelsen / Danish National
  * IT and Telecom Agency
@@ -49,6 +50,7 @@ using System.Text;
 using CprBroker.Providers.DPR;
 using CprBroker.Providers.CPRDirect;
 using CprBroker.Schemas.Part;
+using CprBroker.DAWA;
 
 namespace CprBroker.DBR.Extensions
 {
@@ -104,7 +106,21 @@ namespace CprBroker.DBR.Extensions
                 {
                     if (schemaAdr.Item is DanskAdresseType || schemaAdr.Item is GroenlandAdresseType)
                     {
-                        if (IsValidAddress(dataContext, resp.ClearWrittenAddress.MunicipalityCode, resp.ClearWrittenAddress.StreetCode, resp.ClearWrittenAddress.HouseNumber))
+                        // Preparing data for DAWA request
+                        Dictionary<string, string> urlParamDict = new Dictionary<string, string>()
+                        {
+                            {"kommunekode", resp.ClearWrittenAddress.MunicipalityCode.ToString()},
+                            {"vejkode", resp.ClearWrittenAddress.StreetCode.ToString()},
+                            {"husnr", resp.ClearWrittenAddress.HouseNumber.ToString()}
+                        };
+
+                        // Calling DAWA
+                        string addressServiceResponseJSON = DawaClient.Lookup("adresser", urlParamDict);
+                        Dictionary<string, string> dawaResult = DawaClient.ParseAddressResponse(addressServiceResponseJSON);
+
+                        // If not empty/null then it contains a danish address uuid which means 'ClearWrittenAddress' exists.
+                        if (!string.IsNullOrEmpty(dawaResult["dawaUuid"]))
+                        //if (IsValidAddress(dataContext, resp.ClearWrittenAddress.MunicipalityCode, resp.ClearWrittenAddress.StreetCode, resp.ClearWrittenAddress.HouseNumber))
                         {
                             // KEEP in dead people
                             if (resp.CurrentAddressInformation.MunicipalityCode > 0)
