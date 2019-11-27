@@ -24,6 +24,7 @@
  * Contributor(s):
  * Beemen Beshara
  * Dennis Amdi Skov Isaksen
+ * Heini Leander Ovason
  *
  * The code is currently governed by IT- og Telestyrelsen / Danish National
  * IT and Telecom Agency
@@ -45,55 +46,217 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using CprBroker.DAWA;
 using CprBroker.Providers.CPRDirect;
 using CprBroker.Providers.DPR;
+using CprBroker.Schemas.Part;
 
 namespace CprBroker.DBR.Extensions
 {
     public static partial class CprConverterExtensions
     {
-        public static PersonAddress ToDpr(this CurrentAddressWrapper currentAddress, DPRDataContext dataContext, PersonInformationType personInformation)
+        public static PersonAddress ToDpr(this CurrentAddressWrapper currentAddress, 
+            DPRDataContext dataContext, PersonInformationType personInformation
+            )
         {
-            PersonAddress pa = new PersonAddress();
-            pa.PNR = Decimal.Parse(currentAddress.CurrentAddressInformation.PNR);
+            PersonAddress pa = new PersonAddress
+            {
+                PNR = Decimal.Parse(currentAddress.CurrentAddressInformation.PNR)
+            };
+
+            if (currentAddress.CurrentAddressInformation.RelocationDate.HasValue)
+            {    
+                pa.CprUpdateDate = CprBroker.Utilities.Dates.DateToDecimal(
+                    currentAddress.CurrentAddressInformation.RelocationDate.Value, 
+                    12
+                    );
+            }
+
+            Dictionary<string, string> currentAddrDict = 
+                DawaClient.ConstructAddressDictWithCurrentAddressWrapper(currentAddress);
+
+            string addressServiceResponseJSON = DawaClient.Lookup("adresser", currentAddrDict);
+
+            if (addressServiceResponseJSON != null | 
+                addressServiceResponseJSON.Length != 0)
+            {
+                // If DAWA returns an address we use it for PersonAddress.
+                Dictionary<string, string> dawaCurrentAddr = DawaClient.ParseAddressResponse(
+                    addressServiceResponseJSON
+                    );
+
+                string munCode = dawaCurrentAddr["munCode"];
+                if (!string.IsNullOrEmpty(munCode))
+                {
+                    pa.MunicipalityCode = Convert.ToDecimal(munCode);
+                }
+                else
+                {
+                    pa.StreetCode = 0;
+                }
+
+                string streetCode = dawaCurrentAddr["streetCode"];
+                if (!string.IsNullOrEmpty(streetCode))
+                {
+                    pa.StreetCode = Convert.ToDecimal(streetCode);
+                }
+                else
+                {
+                    pa.StreetCode = 0;
+                }
+
+                string houseNo = dawaCurrentAddr["houseNo"];
+                if (!string.IsNullOrEmpty(houseNo))
+                {
+                    pa.HouseNumber = houseNo;
+                }
+                else
+                {
+                    pa.HouseNumber = null;
+                }
+
+                string floor = dawaCurrentAddr["floor"]; 
+                if (!string.IsNullOrEmpty(floor))
+                {
+                    pa.Floor = floor;
+                }
+                else
+                {
+                    pa.Floor = null;
+                }
+
+                string door = dawaCurrentAddr["door"];
+                if (!string.IsNullOrEmpty(door))
+                {
+                    pa.DoorNumber = door.PadLeft(4, ' ');
+                }
+                else
+                {
+                    pa.DoorNumber= null;
+                }
+
+                //if (new string[] { "th", "tv", "mf" }.Contains(dawaCurrentAddr["door"]))
+                //    pa.DoorNumber = dawaCurrentAddr["door"].PadLeft(4, ' ');
+                //else
+                //    pa.DoorNumber = dawaCurrentAddr["door"].NullIfEmpty(); 
+
+                string PostCode = dawaCurrentAddr["postCode"];
+                if (!string.IsNullOrEmpty(PostCode))
+                {
+                    pa.PostCode = Convert.ToDecimal(PostCode);
+                }
+                else
+                {
+                    pa.PostCode = 0;
+                }
+
+                string munName = dawaCurrentAddr["munName"];
+                if (!string.IsNullOrEmpty(munName))
+                {
+                    if(munName.Length > 20)
+                    {
+                        pa.MunicipalityName = munName.Substring(0, 20);
+                    }
+                    else
+                    {
+                        pa.MunicipalityName = munName;
+                    }
+                }
+                else
+                {
+                    pa.MunicipalityName = null;
+                }
+
+                string addrDescr = dawaCurrentAddr["addrDescr"];
+                if (!string.IsNullOrEmpty(addrDescr))
+                {
+                    if(addrDescr.Length > 20)
+                    {
+                        pa.StreetAddressingName = addrDescr.Substring(0, 20);
+                    }
+                    else
+                    {
+                        pa.StreetAddressingName = addrDescr;
+                    }
+                }
+                else
+                {
+                    pa.StreetAddressingName = null;
+                }
+
+                string townName = dawaCurrentAddr["townName"].NullIfEmpty();
+                if (!string.IsNullOrEmpty(townName))
+                {
+                    if(townName.Length > 34)
+                    {
+                        pa.Town = townName.Substring(0, 34);
+                    }
+                    else
+                    {
+                        pa.Town = townName;
+                    }
+                }
+                else
+                {
+                    pa.Town = null;
+                }
+            }
+            else
+            {
+                // If DAWA does not return any address(null) then we fall back to prior logic.
+
+                pa.MunicipalityCode = currentAddress.CurrentAddressInformation.MunicipalityCode;
+
+
+                pa.StreetCode = currentAddress.CurrentAddressInformation.StreetCode;
+
+
+                pa.HouseNumber = currentAddress.CurrentAddressInformation.HouseNumber.NullIfEmpty();
+
+
+                if (!string.IsNullOrEmpty(currentAddress.CurrentAddressInformation.Floor))
+                    pa.Floor = currentAddress.CurrentAddressInformation.Floor;
+                else
+                    pa.Floor = null;
+
+
+                if (!string.IsNullOrEmpty(currentAddress.CurrentAddressInformation.Door))
+                {
+                    if (new string[] { "th", "tv", "mf" }.Contains(currentAddress.CurrentAddressInformation.Door))
+                        pa.DoorNumber = currentAddress.CurrentAddressInformation.Door.PadLeft(4, ' ');
+                    else
+                        pa.DoorNumber = currentAddress.CurrentAddressInformation.Door;
+                }
+                else
+                { 
+                    pa.DoorNumber = null;
+                }
+
+                pa.PostCode = currentAddress.ClearWrittenAddress.PostCode;
+
+                pa.MunicipalityName = CprBroker.Providers.CPRDirect.Authority.GetAuthorityNameByCode(pa.MunicipalityCode.ToString().NullIfEmpty());
+
+                if (!string.IsNullOrEmpty(currentAddress.ClearWrittenAddress.StreetAddressingName))
+                    pa.StreetAddressingName = currentAddress.ClearWrittenAddress.StreetAddressingName;
+                else
+                    pa.StreetAddressingName = Street.GetAddressingName(dataContext.Connection.ConnectionString, currentAddress.CurrentAddressInformation.MunicipalityCode, currentAddress.CurrentAddressInformation.StreetCode);
+
+                if (!string.IsNullOrEmpty(currentAddress.ClearWrittenAddress.CityName))
+                    pa.Town = currentAddress.ClearWrittenAddress.CityName;
+                else
+                    pa.Town = null;
+
+            }
+            
+            // Below is all data that cannot be retrieved from DAWA.
 
             if (currentAddress.CurrentAddressInformation.RelocationDate.HasValue)
                 pa.CprUpdateDate = CprBroker.Utilities.Dates.DateToDecimal(currentAddress.CurrentAddressInformation.RelocationDate.Value, 12);
 
-            pa.MunicipalityCode = currentAddress.CurrentAddressInformation.MunicipalityCode;
-            pa.StreetCode = currentAddress.CurrentAddressInformation.StreetCode;
-            pa.HouseNumber = currentAddress.CurrentAddressInformation.HouseNumber.NullIfEmpty();
-
-            if (!string.IsNullOrEmpty(currentAddress.CurrentAddressInformation.Floor))
-                pa.Floor = currentAddress.CurrentAddressInformation.Floor;
-            else
-                pa.Floor = null;
-
-            if (!string.IsNullOrEmpty(currentAddress.CurrentAddressInformation.Door))
-            {
-                if (new string[] { "th", "tv", "mf" }.Contains(currentAddress.CurrentAddressInformation.Door))
-                    pa.DoorNumber = currentAddress.CurrentAddressInformation.Door.PadLeft(4, ' ');
-                else
-                    pa.DoorNumber = currentAddress.CurrentAddressInformation.Door;
-            }
-            else
-                pa.DoorNumber = null;
-
             if (!string.IsNullOrEmpty(currentAddress.ClearWrittenAddress.BuildingNumber))
                 pa.GreenlandConstructionNumber = currentAddress.ClearWrittenAddress.BuildingNumber;
             else
-                pa.GreenlandConstructionNumber = null;
-
-            pa.PostCode = currentAddress.ClearWrittenAddress.PostCode;
-
-            if (IsValidAddress(dataContext, currentAddress.ClearWrittenAddress.MunicipalityCode, currentAddress.ClearWrittenAddress.StreetCode, currentAddress.ClearWrittenAddress.HouseNumber))
-                pa.MunicipalityName = CprBroker.Providers.CPRDirect.Authority.GetAuthorityNameByCode(pa.MunicipalityCode.ToString());
-
-            if (!string.IsNullOrEmpty(currentAddress.ClearWrittenAddress.StreetAddressingName))
-                pa.StreetAddressingName = currentAddress.ClearWrittenAddress.StreetAddressingName;
-            else
-                pa.StreetAddressingName = Street.GetAddressingName(dataContext.Connection.ConnectionString, currentAddress.CurrentAddressInformation.MunicipalityCode, currentAddress.CurrentAddressInformation.StreetCode);
+                pa.GreenlandConstructionNumber = null;     
 
             if (currentAddress.CurrentAddressInformation.RelocationDate.Value != null)
             {
@@ -110,7 +273,7 @@ namespace CprBroker.DBR.Extensions
             //if (personInformation.Status == 90 /* >= 20*/ && personInformation.StatusStartDate.HasValue)
             //    pa.AddressEndDate = CprBroker.Utilities.Dates.DateToDecimal(personInformation.StatusStartDate.Value, 12);
             //else
-                pa.AddressEndDate = null; // This is the current date
+            pa.AddressEndDate = null; // This is the current date
 
             pa.LeavingFromMunicipalityCode = null; // To be set later
             pa.LeavingFromMunicipalityDate = null; // To be set later
@@ -145,11 +308,6 @@ namespace CprBroker.DBR.Extensions
             else
                 pa.CareOfName = null;
 
-            if (!string.IsNullOrEmpty(currentAddress.ClearWrittenAddress.CityName))
-                pa.Town = currentAddress.ClearWrittenAddress.CityName;
-            else
-                pa.Town = null;
-
             if (!string.IsNullOrEmpty(currentAddress.ClearWrittenAddress.Location))
                 pa.Location = currentAddress.ClearWrittenAddress.Location;
             else
@@ -183,47 +341,48 @@ namespace CprBroker.DBR.Extensions
             return pa;
         }
 
-        private static bool IsValidAddress(DPRDataContext dataContext, decimal municipalityCode, decimal streetCode, string houseNumber)
-        {
-            var ret = PostDistrict.GetPostText(dataContext.Connection.ConnectionString, municipalityCode, streetCode, houseNumber);
-            return ret != null;
-        }
+        // Deprecated due to address data in DPR Emulation database not being updated with new addresses automatically. 
+        // The whole reason for the DWA integration.
+        //private static bool IsValidAddress(DPRDataContext dataContext, decimal municipalityCode, decimal streetCode, string houseNumber)
+        //{
+        //    var ret = PostDistrict.GetPostText(dataContext.Connection.ConnectionString, municipalityCode, streetCode, houseNumber);
+        //    return ret != null;
+        //}
 
         public static PersonAddress ToDpr(this HistoricalAddressType historicalAddress, DPRDataContext dataContext)
         {
-            PersonAddress pa = new PersonAddress();
-            pa.PNR = Decimal.Parse(historicalAddress.PNR);
+            PersonAddress pa = new PersonAddress
+            {
+                PNR = Decimal.Parse(historicalAddress.PNR)
+            };
+
             if (historicalAddress.RelocationDate.HasValue)
                 pa.CprUpdateDate = CprBroker.Utilities.Dates.DateToDecimal(historicalAddress.RelocationDate.Value, 12);
-            pa.MunicipalityCode = historicalAddress.MunicipalityCode;
+
             pa.StreetCode = historicalAddress.StreetCode;
+
+            pa.MunicipalityCode = historicalAddress.MunicipalityCode;
+
             pa.HouseNumber = historicalAddress.HouseNumber.NullIfEmpty();
             if (!string.IsNullOrEmpty(historicalAddress.Floor))
                 pa.Floor = historicalAddress.Floor;
             else
                 pa.Floor = null;
+
             if (!string.IsNullOrEmpty(historicalAddress.Door))
-            {
                 if (historicalAddress.Door.Equals("th") || historicalAddress.Door.Equals("tv"))
                     pa.DoorNumber = "  " + historicalAddress.Door;
                 else
                     pa.DoorNumber = historicalAddress.Door;
-            }
             else
                 pa.DoorNumber = null;
-            if (!string.IsNullOrEmpty(historicalAddress.BuildingNumber))
-                pa.GreenlandConstructionNumber = historicalAddress.BuildingNumber;
-            else
-                pa.GreenlandConstructionNumber = null;
 
             var postCode = PostDistrict.GetPostCode(dataContext.Connection.ConnectionString, historicalAddress.MunicipalityCode, historicalAddress.StreetCode, historicalAddress.HouseNumber);
             if (postCode.HasValue)
-            {
                 pa.PostCode = postCode.Value;
-            }
 
-            if (IsValidAddress(dataContext, historicalAddress.MunicipalityCode, historicalAddress.StreetCode, historicalAddress.HouseNumber))
-                pa.MunicipalityName = CprBroker.Providers.CPRDirect.Authority.GetAuthorityNameByCode(pa.MunicipalityCode.ToString());
+
+            pa.MunicipalityName = CprBroker.Providers.CPRDirect.Authority.GetAuthorityNameByCode(pa.MunicipalityCode.ToString().NullIfEmpty());
 
             var streetAdressingName = Street.GetAddressingName(dataContext.Connection.ConnectionString, historicalAddress.MunicipalityCode, historicalAddress.StreetCode);
             if (!string.IsNullOrEmpty(streetAdressingName))
@@ -232,6 +391,16 @@ namespace CprBroker.DBR.Extensions
                 pa.StreetAddressingName = "Adresse ikke komplet";
             else
                 pa.StreetAddressingName = null;
+
+            pa.Town = City.GetCityName(dataContext.Connection.ConnectionString, historicalAddress.MunicipalityCode, historicalAddress.StreetCode, historicalAddress.HouseNumber);
+
+            if (historicalAddress.RelocationDate.HasValue)
+                pa.CprUpdateDate = CprBroker.Utilities.Dates.DateToDecimal(historicalAddress.RelocationDate.Value, 12);
+
+            if (!string.IsNullOrEmpty(historicalAddress.BuildingNumber))
+                pa.GreenlandConstructionNumber = historicalAddress.BuildingNumber;
+            else
+                pa.GreenlandConstructionNumber = null;
 
             // TODO: Shall we use length 12 or 13?
             if (historicalAddress.RelocationDate.HasValue)
@@ -258,8 +427,6 @@ namespace CprBroker.DBR.Extensions
                 pa.CareOfName = historicalAddress.CareOfName;
             else
                 pa.CareOfName = null;
-
-            pa.Town = City.GetCityName(dataContext.Connection.ConnectionString, historicalAddress.MunicipalityCode, historicalAddress.StreetCode, historicalAddress.HouseNumber);
 
             pa.Location = null; //Find in GoeLookup, based on street code and house number
             pa.AdditionalAddressLine1 = null; // Seems not available in historical records....

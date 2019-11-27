@@ -24,6 +24,7 @@
  * Contributor(s):
  * Beemen Beshara
  * Dennis Amdi Skov Isaksen
+ * Heini Leander Ovason
  *
  * The code is currently governed by IT- og Telestyrelsen / Danish National
  * IT and Telecom Agency
@@ -49,6 +50,7 @@ using System.Text;
 using CprBroker.Providers.DPR;
 using CprBroker.Providers.CPRDirect;
 using CprBroker.Schemas.Part;
+using CprBroker.DAWA;
 
 namespace CprBroker.DBR.Extensions
 {
@@ -104,57 +106,54 @@ namespace CprBroker.DBR.Extensions
                 {
                     if (schemaAdr.Item is DanskAdresseType || schemaAdr.Item is GroenlandAdresseType)
                     {
-                        if (IsValidAddress(dataContext, resp.ClearWrittenAddress.MunicipalityCode, resp.ClearWrittenAddress.StreetCode, resp.ClearWrittenAddress.HouseNumber))
+                        // KEEP in dead people
+                        if (resp.CurrentAddressInformation.MunicipalityCode > 0)
+                            pt.CurrentMunicipalityName = CprBroker.Providers.CPRDirect.Authority.GetAuthorityNameByCode(pt.MunicipalityCode.ToString());
+
+                        if (putCurrentAddress)
                         {
-                            // KEEP in dead people
-                            if (resp.CurrentAddressInformation.MunicipalityCode > 0)
-                                pt.CurrentMunicipalityName = CprBroker.Providers.CPRDirect.Authority.GetAuthorityNameByCode(pt.MunicipalityCode.ToString());
+                            pt.StandardAddress = resp.ClearWrittenAddress.LabelledAddress.NullIfEmpty();
+                            pt.Location = resp.ClearWrittenAddress.Location.NullIfEmpty();
 
-                            if (putCurrentAddress)
+                            pt.MunicipalityCode = resp.CurrentAddressInformation.MunicipalityCode;
+                            pt.StreetCode = resp.CurrentAddressInformation.StreetCode;
+                            pt.HouseNumber = resp.CurrentAddressInformation.HouseNumber;
+
+                            if (!string.IsNullOrEmpty(resp.CurrentAddressInformation.Floor))
+                                pt.Floor = resp.CurrentAddressInformation.Floor;
+                            else
+                                pt.Floor = null;
+                            if (!string.IsNullOrEmpty(resp.CurrentAddressInformation.Door))
                             {
-                                pt.StandardAddress = resp.ClearWrittenAddress.LabelledAddress.NullIfEmpty();
-                                pt.Location = resp.ClearWrittenAddress.Location.NullIfEmpty();
-
-                                pt.MunicipalityCode = resp.CurrentAddressInformation.MunicipalityCode;
-                                pt.StreetCode = resp.CurrentAddressInformation.StreetCode;
-                                pt.HouseNumber = resp.CurrentAddressInformation.HouseNumber;
-
-                                if (!string.IsNullOrEmpty(resp.CurrentAddressInformation.Floor))
-                                    pt.Floor = resp.CurrentAddressInformation.Floor;
+                                if (new string[] { "th", "tv", "mf" }.Contains(resp.CurrentAddressInformation.Door))
+                                    pt.Door = resp.CurrentAddressInformation.Door.PadLeft(4, ' ');
                                 else
-                                    pt.Floor = null;
-                                if (!string.IsNullOrEmpty(resp.CurrentAddressInformation.Door))
-                                {
-                                    if (new string[] { "th", "tv", "mf" }.Contains(resp.CurrentAddressInformation.Door))
-                                        pt.Door = resp.CurrentAddressInformation.Door.PadLeft(4, ' ');
-                                    else
-                                        pt.Door = resp.CurrentAddressInformation.Door;
-                                }
-                                else
-                                    pt.Door = null;
-                                if (!string.IsNullOrEmpty(resp.CurrentAddressInformation.BuildingNumber))
-                                    pt.ConstructionNumber = resp.CurrentAddressInformation.BuildingNumber;
-                                else
-                                    pt.ConstructionNumber = null;
-                                if (resp.CurrentAddressInformation.RelocationDate.HasValue)
-                                    pt.AddressDate = CprBroker.Utilities.Dates.DateToDecimal(resp.CurrentAddressInformation.RelocationDate.Value, 12);
-                                if (resp.CurrentAddressInformation.MunicipalityArrivalDate.HasValue)
-                                    pt.MunicipalityArrivalDate = CprBroker.Utilities.Dates.DateToDecimal(resp.CurrentAddressInformation.MunicipalityArrivalDate.Value, 12);
-
-                                if (resp.CurrentAddressInformation.LeavingMunicipalityDepartureDate.HasValue)
-                                {
-                                    pt.MunicipalityLeavingDate = CprBroker.Utilities.Dates.DateToDecimal(resp.CurrentAddressInformation.LeavingMunicipalityDepartureDate.Value, 12);
-                                }
-
-                                if (!string.IsNullOrEmpty(resp.CurrentAddressInformation.CareOfName))
-                                    pt.CareOfName = resp.CurrentAddressInformation.CareOfName;
-                                else
-                                    pt.CareOfName = null;
-                                if (!string.IsNullOrEmpty(resp.ClearWrittenAddress.CityName))
-                                    pt.CityName = resp.ClearWrittenAddress.CityName;
-                                else
-                                    pt.CityName = null;
+                                    pt.Door = resp.CurrentAddressInformation.Door;
                             }
+                            else
+                                pt.Door = null;
+                            if (!string.IsNullOrEmpty(resp.CurrentAddressInformation.BuildingNumber))
+                                pt.ConstructionNumber = resp.CurrentAddressInformation.BuildingNumber;
+                            else
+                                pt.ConstructionNumber = null;
+                            if (resp.CurrentAddressInformation.RelocationDate.HasValue)
+                                pt.AddressDate = CprBroker.Utilities.Dates.DateToDecimal(resp.CurrentAddressInformation.RelocationDate.Value, 12);
+                            if (resp.CurrentAddressInformation.MunicipalityArrivalDate.HasValue)
+                                pt.MunicipalityArrivalDate = CprBroker.Utilities.Dates.DateToDecimal(resp.CurrentAddressInformation.MunicipalityArrivalDate.Value, 12);
+
+                            if (resp.CurrentAddressInformation.LeavingMunicipalityDepartureDate.HasValue)
+                            {
+                                pt.MunicipalityLeavingDate = CprBroker.Utilities.Dates.DateToDecimal(resp.CurrentAddressInformation.LeavingMunicipalityDepartureDate.Value, 12);
+                            }
+
+                            if (!string.IsNullOrEmpty(resp.CurrentAddressInformation.CareOfName))
+                                pt.CareOfName = resp.CurrentAddressInformation.CareOfName;
+                            else
+                                pt.CareOfName = null;
+                            if (!string.IsNullOrEmpty(resp.ClearWrittenAddress.CityName))
+                                pt.CityName = resp.ClearWrittenAddress.CityName;
+                            else
+                                pt.CityName = null;
                         }
                     }
                 }
