@@ -288,7 +288,7 @@ namespace CprBroker.DBR
             // Preparing data for DAWA request
             Dictionary<string, string> urlParamDict = new Dictionary<string, string>()
             {
-                {"kommunekode", "0151"},
+                {"kommunekode", komKod.ToString().PadLeft(4, '0')},
             };
 
             // Calling DAWA

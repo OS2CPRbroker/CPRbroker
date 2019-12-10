@@ -42,6 +42,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 using CprBroker.Engine.Local;
+using CprBroker.Providers.CPRDirect;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -79,6 +80,7 @@ namespace CprBroker.DAWA
 
                 string postCode = responseDict[0]["adgangsadresse"]["postnummer"]["nr"];
                 string munName = responseDict[0]["adgangsadresse"]["kommune"]["navn"];
+                string munCode = responseDict[0]["adgangsadresse"]["kommune"]["kode"];
                 string townName = responseDict[0]["adgangsadresse"]["postnummer"]["navn"];
                 string streetCode = responseDict[0]["adgangsadresse"]["vejstykke"]["kode"];
                 string floor = responseDict[0]["etage"];
@@ -91,6 +93,7 @@ namespace CprBroker.DAWA
                 {
                     {"postCode", postCode},
                     {"munName", munName},
+                    {"munCode", munCode},
                     {"town", townName},
                     {"streetCode", streetCode},
                     {"floor", floor},
@@ -234,6 +237,54 @@ namespace CprBroker.DAWA
                 //Console.WriteLine(logMsg);
             }
             return (result == true ? true : false);
+        }
+
+        public static Dictionary<string, string> ConstructAddressDictWithHistoricalAddressType(HistoricalAddressType historicalAddress)
+        {
+            Dictionary<string, string> addressDict = new Dictionary<string, string>();
+
+            if (!string.IsNullOrEmpty(historicalAddress.MunicipalityCode.ToString())
+                && !string.IsNullOrEmpty(historicalAddress.StreetCode.ToString())
+                && !string.IsNullOrEmpty(historicalAddress.HouseNumber.ToString()))
+            {
+                addressDict.Add("kommunekode", historicalAddress.MunicipalityCode.ToString());
+                addressDict.Add("vejkode", historicalAddress.StreetCode.ToString());
+                addressDict.Add("husnr", historicalAddress.HouseNumber.ToString());
+
+                if (!string.IsNullOrEmpty(historicalAddress.Floor.ToString()))
+                {
+                    addressDict.Add("floor", historicalAddress.Floor.ToString());
+                }
+                if (!string.IsNullOrEmpty(historicalAddress.Door.ToString()))
+                {
+                    addressDict.Add("door", historicalAddress.Door.ToString());
+                }
+            }
+            return addressDict;
+        }
+
+        public static Dictionary<string, string> ConstructAddressDictWithCurrentAddressWrapper(CurrentAddressWrapper currentAddressWrapper)
+        {
+            Dictionary<string, string> addressDict = new Dictionary<string, string>();
+
+            if (!string.IsNullOrEmpty(currentAddressWrapper.ClearWrittenAddress.MunicipalityCode.ToString())
+                && !string.IsNullOrEmpty(currentAddressWrapper.ClearWrittenAddress.StreetCode.ToString())
+                && !string.IsNullOrEmpty(currentAddressWrapper.ClearWrittenAddress.HouseNumber.ToString()))
+            {
+                addressDict.Add("kommunekode", currentAddressWrapper.ClearWrittenAddress.MunicipalityCode.ToString());
+                addressDict.Add("vejkode", currentAddressWrapper.ClearWrittenAddress.StreetCode.ToString());
+                addressDict.Add("husnr", currentAddressWrapper.ClearWrittenAddress.HouseNumber.ToString());
+
+                if (!string.IsNullOrEmpty(currentAddressWrapper.ClearWrittenAddress.Floor.ToString()))
+                {
+                    addressDict.Add("floor", currentAddressWrapper.ClearWrittenAddress.Floor.ToString());
+                }
+                if (!string.IsNullOrEmpty(currentAddressWrapper.ClearWrittenAddress.Door.ToString()))
+                {
+                    addressDict.Add("door", currentAddressWrapper.ClearWrittenAddress.Door.ToString());
+                }
+            }
+            return addressDict;
         }
 
     }
