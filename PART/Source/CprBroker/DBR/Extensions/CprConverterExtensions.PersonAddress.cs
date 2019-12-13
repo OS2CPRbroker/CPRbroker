@@ -255,7 +255,8 @@ namespace CprBroker.DBR.Extensions
             return pa;
         }
 
-        // Deprecated due to address data in DPR Emulation database not being updated with new addresses automatically.
+        // Deprecated due to address data in DPR Emulation database not being updated with new addresses automatically. 
+        // The whole reason for the DWA integration.
         //private static bool IsValidAddress(DPRDataContext dataContext, decimal municipalityCode, decimal streetCode, string houseNumber)
         //{
         //    var ret = PostDistrict.GetPostText(dataContext.Connection.ConnectionString, municipalityCode, streetCode, houseNumber);

@@ -58,5 +58,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CPRDirect\CPRDirect.csproj">
+      <Project>{EDDB494D-782D-4D45-8599-633057B9B203}</Project>
+      <Name>CPRDirect</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
