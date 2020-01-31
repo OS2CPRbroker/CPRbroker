@@ -253,11 +253,11 @@ namespace CprBroker.DAWA
 
                 if (!string.IsNullOrEmpty(historicalAddress.Floor.ToString()))
                 {
-                    addressDict.Add("floor", historicalAddress.Floor.ToString());
+                    addressDict.Add("etage", historicalAddress.Floor.ToString());
                 }
                 if (!string.IsNullOrEmpty(historicalAddress.Door.ToString()))
                 {
-                    addressDict.Add("door", historicalAddress.Door.ToString());
+                    addressDict.Add("dør", historicalAddress.Door.ToString());
                 }
             }
             return addressDict;
@@ -277,11 +277,11 @@ namespace CprBroker.DAWA
 
                 if (!string.IsNullOrEmpty(currentAddressWrapper.ClearWrittenAddress.Floor.ToString()))
                 {
-                    addressDict.Add("floor", currentAddressWrapper.ClearWrittenAddress.Floor.ToString());
+                    addressDict.Add("etage", currentAddressWrapper.ClearWrittenAddress.Floor.ToString());
                 }
                 if (!string.IsNullOrEmpty(currentAddressWrapper.ClearWrittenAddress.Door.ToString()))
                 {
-                    addressDict.Add("door", currentAddressWrapper.ClearWrittenAddress.Door.ToString());
+                    addressDict.Add("dør", currentAddressWrapper.ClearWrittenAddress.Door.ToString());
                 }
             }
             return addressDict;

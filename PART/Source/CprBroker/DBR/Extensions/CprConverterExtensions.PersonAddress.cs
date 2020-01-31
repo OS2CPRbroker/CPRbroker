@@ -187,7 +187,7 @@ namespace CprBroker.DBR.Extensions
             //if (personInformation.Status == 90 /* >= 20*/ && personInformation.StatusStartDate.HasValue)
             //    pa.AddressEndDate = CprBroker.Utilities.Dates.DateToDecimal(personInformation.StatusStartDate.Value, 12);
             //else
-                pa.AddressEndDate = null; // This is the current date
+            pa.AddressEndDate = null; // This is the current date
 
             pa.LeavingFromMunicipalityCode = null; // To be set later
             pa.LeavingFromMunicipalityDate = null; // To be set later
