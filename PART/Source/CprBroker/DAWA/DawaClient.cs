@@ -94,7 +94,7 @@ namespace CprBroker.DAWA
                     {"postCode", postCode},
                     {"munName", munName},
                     {"munCode", munCode},
-                    {"town", townName},
+                    {"townName", townName},
                     {"streetCode", streetCode},
                     {"floor", floor},
                     {"door", door},
