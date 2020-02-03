@@ -64,7 +64,7 @@ namespace CprBroker.DBR.Extensions
             Dictionary<string, string> currentAddrDict = DawaClient.ConstructAddressDictWithCurrentAddressWrapper(currentAddress);
 
             string addressServiceResponseJSON = DawaClient.Lookup("adresser", currentAddrDict);
-
+   
             if (addressServiceResponseJSON != null)
             {
                 // If DAWA does return an address we use it for PersonAddress.
