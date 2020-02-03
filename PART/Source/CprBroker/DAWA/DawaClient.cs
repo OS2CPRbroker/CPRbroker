@@ -57,8 +57,8 @@ namespace CprBroker.DAWA
 
         public static string Lookup(string serviceName, Dictionary<string, string> inputDict)
         {
-            if (inputDict != null 
-                && ValidateParameterKeysAndValues(inputDict) 
+            if (inputDict != null
+                && ValidateParameterKeysAndValues(inputDict)
                 && ValidateServiceName(serviceName)
                 )
             {
@@ -102,17 +102,18 @@ namespace CprBroker.DAWA
                     {"addrDescr", addrDescr},
                     {"dawaUuid", dawaUuid}
                 };
- 
+
                 return sanitizedDict;
 
             }
             catch (Exception ex)
             {
-                Admin.LogError(ex.ToString());
+                string svc_resp = string.Format("Address Service response JSON: {0}", serviceResponseJSON);
+                Admin.LogException(ex, svc_resp);
                 //Console.WriteLine(ex.ToString());
                 return null;
             }
-            
+
         }
 
         public static Dictionary<string, string> ParseMunicipalResponse(string serviceResponseJSON)
@@ -225,7 +226,7 @@ namespace CprBroker.DAWA
             bool result = false;
             foreach (string name in validServiceNames)
             {
-                if(input == name)
+                if (input == name)
                 {
                     result = true;
                 }
@@ -243,13 +244,11 @@ namespace CprBroker.DAWA
         {
             Dictionary<string, string> addressDict = new Dictionary<string, string>();
 
-            if (!string.IsNullOrEmpty(historicalAddress.MunicipalityCode.ToString())
-                && !string.IsNullOrEmpty(historicalAddress.StreetCode.ToString())
-                && !string.IsNullOrEmpty(historicalAddress.HouseNumber.ToString()))
+            try
             {
                 addressDict.Add("kommunekode", historicalAddress.MunicipalityCode.ToString());
                 addressDict.Add("vejkode", historicalAddress.StreetCode.ToString());
-                addressDict.Add("husnr", historicalAddress.HouseNumber.ToString());
+                addressDict.Add("husnr", historicalAddress.HouseNumber.ToString()); 
 
                 if (!string.IsNullOrEmpty(historicalAddress.Floor.ToString()))
                 {
@@ -260,6 +259,13 @@ namespace CprBroker.DAWA
                     addressDict.Add("dør", historicalAddress.Door.ToString());
                 }
             }
+            catch (Exception ex)
+            {
+                string addressWrapper = string.Format("historicalAddress: {0}", historicalAddress.ToString());
+                Admin.LogException(ex, addressWrapper);
+            }
+            string test = string.Format("historicalAddress dict as JSON: {0}", JsonConvert.SerializeObject(addressDict));
+            Admin.LogSuccess(test);
             return addressDict;
         }
 
@@ -267,10 +273,8 @@ namespace CprBroker.DAWA
         {
             Dictionary<string, string> addressDict = new Dictionary<string, string>();
 
-            if (!string.IsNullOrEmpty(currentAddressWrapper.ClearWrittenAddress.MunicipalityCode.ToString())
-                && !string.IsNullOrEmpty(currentAddressWrapper.ClearWrittenAddress.StreetCode.ToString())
-                && !string.IsNullOrEmpty(currentAddressWrapper.ClearWrittenAddress.HouseNumber.ToString()))
-            {
+            try
+            { 
                 addressDict.Add("kommunekode", currentAddressWrapper.ClearWrittenAddress.MunicipalityCode.ToString());
                 addressDict.Add("vejkode", currentAddressWrapper.ClearWrittenAddress.StreetCode.ToString());
                 addressDict.Add("husnr", currentAddressWrapper.ClearWrittenAddress.HouseNumber.ToString());
@@ -284,6 +288,13 @@ namespace CprBroker.DAWA
                     addressDict.Add("dør", currentAddressWrapper.ClearWrittenAddress.Door.ToString());
                 }
             }
+            catch(Exception ex)
+            {
+                string addressWrapper = string.Format("currentAddressWrapper: {0}", currentAddressWrapper.ToString());
+                Admin.LogException(ex, addressWrapper);
+            }
+            string test = string.Format("currentAddressWrapper dict as JSON: {0}", JsonConvert.SerializeObject(addressDict));
+            Admin.LogSuccess(test);
             return addressDict;
         }
 
