@@ -106,71 +106,54 @@ namespace CprBroker.DBR.Extensions
                 {
                     if (schemaAdr.Item is DanskAdresseType || schemaAdr.Item is GroenlandAdresseType)
                     {
-                        // Preparing data for DAWA request
-                        Dictionary<string, string> urlParamDict = new Dictionary<string, string>()
+                        // KEEP in dead people
+                        if (resp.CurrentAddressInformation.MunicipalityCode > 0)
+                            pt.CurrentMunicipalityName = CprBroker.Providers.CPRDirect.Authority.GetAuthorityNameByCode(pt.MunicipalityCode.ToString());
+
+                        if (putCurrentAddress)
                         {
-                            {"kommunekode", resp.ClearWrittenAddress.MunicipalityCode.ToString()},
-                            {"vejkode", resp.ClearWrittenAddress.StreetCode.ToString()},
-                            {"husnr", resp.ClearWrittenAddress.HouseNumber.ToString()}
-                        };
+                            pt.StandardAddress = resp.ClearWrittenAddress.LabelledAddress.NullIfEmpty();
+                            pt.Location = resp.ClearWrittenAddress.Location.NullIfEmpty();
 
-                        // Calling DAWA
-                        string addressServiceResponseJSON = DawaClient.Lookup("adresser", urlParamDict);
-                        Dictionary<string, string> dawaResult = DawaClient.ParseAddressResponse(addressServiceResponseJSON);
+                            pt.MunicipalityCode = resp.CurrentAddressInformation.MunicipalityCode;
+                            pt.StreetCode = resp.CurrentAddressInformation.StreetCode;
+                            pt.HouseNumber = resp.CurrentAddressInformation.HouseNumber;
 
-                        // If not empty/null then it contains a danish address uuid which means 'ClearWrittenAddress' exists.
-                        if (!string.IsNullOrEmpty(dawaResult["dawaUuid"]))
-                        //if (IsValidAddress(dataContext, resp.ClearWrittenAddress.MunicipalityCode, resp.ClearWrittenAddress.StreetCode, resp.ClearWrittenAddress.HouseNumber))
-                        {
-                            // KEEP in dead people
-                            if (resp.CurrentAddressInformation.MunicipalityCode > 0)
-                                pt.CurrentMunicipalityName = CprBroker.Providers.CPRDirect.Authority.GetAuthorityNameByCode(pt.MunicipalityCode.ToString());
-
-                            if (putCurrentAddress)
+                            if (!string.IsNullOrEmpty(resp.CurrentAddressInformation.Floor))
+                                pt.Floor = resp.CurrentAddressInformation.Floor;
+                            else
+                                pt.Floor = null;
+                            if (!string.IsNullOrEmpty(resp.CurrentAddressInformation.Door))
                             {
-                                pt.StandardAddress = resp.ClearWrittenAddress.LabelledAddress.NullIfEmpty();
-                                pt.Location = resp.ClearWrittenAddress.Location.NullIfEmpty();
-
-                                pt.MunicipalityCode = resp.CurrentAddressInformation.MunicipalityCode;
-                                pt.StreetCode = resp.CurrentAddressInformation.StreetCode;
-                                pt.HouseNumber = resp.CurrentAddressInformation.HouseNumber;
-
-                                if (!string.IsNullOrEmpty(resp.CurrentAddressInformation.Floor))
-                                    pt.Floor = resp.CurrentAddressInformation.Floor;
+                                if (new string[] { "th", "tv", "mf" }.Contains(resp.CurrentAddressInformation.Door))
+                                    pt.Door = resp.CurrentAddressInformation.Door.PadLeft(4, ' ');
                                 else
-                                    pt.Floor = null;
-                                if (!string.IsNullOrEmpty(resp.CurrentAddressInformation.Door))
-                                {
-                                    if (new string[] { "th", "tv", "mf" }.Contains(resp.CurrentAddressInformation.Door))
-                                        pt.Door = resp.CurrentAddressInformation.Door.PadLeft(4, ' ');
-                                    else
-                                        pt.Door = resp.CurrentAddressInformation.Door;
-                                }
-                                else
-                                    pt.Door = null;
-                                if (!string.IsNullOrEmpty(resp.CurrentAddressInformation.BuildingNumber))
-                                    pt.ConstructionNumber = resp.CurrentAddressInformation.BuildingNumber;
-                                else
-                                    pt.ConstructionNumber = null;
-                                if (resp.CurrentAddressInformation.RelocationDate.HasValue)
-                                    pt.AddressDate = CprBroker.Utilities.Dates.DateToDecimal(resp.CurrentAddressInformation.RelocationDate.Value, 12);
-                                if (resp.CurrentAddressInformation.MunicipalityArrivalDate.HasValue)
-                                    pt.MunicipalityArrivalDate = CprBroker.Utilities.Dates.DateToDecimal(resp.CurrentAddressInformation.MunicipalityArrivalDate.Value, 12);
-
-                                if (resp.CurrentAddressInformation.LeavingMunicipalityDepartureDate.HasValue)
-                                {
-                                    pt.MunicipalityLeavingDate = CprBroker.Utilities.Dates.DateToDecimal(resp.CurrentAddressInformation.LeavingMunicipalityDepartureDate.Value, 12);
-                                }
-
-                                if (!string.IsNullOrEmpty(resp.CurrentAddressInformation.CareOfName))
-                                    pt.CareOfName = resp.CurrentAddressInformation.CareOfName;
-                                else
-                                    pt.CareOfName = null;
-                                if (!string.IsNullOrEmpty(resp.ClearWrittenAddress.CityName))
-                                    pt.CityName = resp.ClearWrittenAddress.CityName;
-                                else
-                                    pt.CityName = null;
+                                    pt.Door = resp.CurrentAddressInformation.Door;
                             }
+                            else
+                                pt.Door = null;
+                            if (!string.IsNullOrEmpty(resp.CurrentAddressInformation.BuildingNumber))
+                                pt.ConstructionNumber = resp.CurrentAddressInformation.BuildingNumber;
+                            else
+                                pt.ConstructionNumber = null;
+                            if (resp.CurrentAddressInformation.RelocationDate.HasValue)
+                                pt.AddressDate = CprBroker.Utilities.Dates.DateToDecimal(resp.CurrentAddressInformation.RelocationDate.Value, 12);
+                            if (resp.CurrentAddressInformation.MunicipalityArrivalDate.HasValue)
+                                pt.MunicipalityArrivalDate = CprBroker.Utilities.Dates.DateToDecimal(resp.CurrentAddressInformation.MunicipalityArrivalDate.Value, 12);
+
+                            if (resp.CurrentAddressInformation.LeavingMunicipalityDepartureDate.HasValue)
+                            {
+                                pt.MunicipalityLeavingDate = CprBroker.Utilities.Dates.DateToDecimal(resp.CurrentAddressInformation.LeavingMunicipalityDepartureDate.Value, 12);
+                            }
+
+                            if (!string.IsNullOrEmpty(resp.CurrentAddressInformation.CareOfName))
+                                pt.CareOfName = resp.CurrentAddressInformation.CareOfName;
+                            else
+                                pt.CareOfName = null;
+                            if (!string.IsNullOrEmpty(resp.ClearWrittenAddress.CityName))
+                                pt.CityName = resp.ClearWrittenAddress.CityName;
+                            else
+                                pt.CityName = null;
                         }
                     }
                 }

@@ -43,6 +43,7 @@
 
 using CprBroker.Engine.Local;
 using CprBroker.Providers.CPRDirect;
+using CprBroker.Schemas.Part;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -108,9 +109,8 @@ namespace CprBroker.DAWA
             }
             catch (Exception ex)
             {
-                string svc_resp = string.Format("Address Service response JSON: {0}", serviceResponseJSON);
+                string svc_resp = string.Format("Response as JSON: {0}", serviceResponseJSON);
                 Admin.LogException(ex, svc_resp);
-                //Console.WriteLine(ex.ToString());
                 return null;
             }
 
@@ -240,34 +240,6 @@ namespace CprBroker.DAWA
             return (result == true ? true : false);
         }
 
-        public static Dictionary<string, string> ConstructAddressDictWithHistoricalAddressType(HistoricalAddressType historicalAddress)
-        {
-            Dictionary<string, string> addressDict = new Dictionary<string, string>();
-
-            try
-            {
-                addressDict.Add("kommunekode", historicalAddress.MunicipalityCode.ToString());
-                addressDict.Add("vejkode", historicalAddress.StreetCode.ToString());
-                addressDict.Add("husnr", historicalAddress.HouseNumber.ToString()); 
-
-                if (!string.IsNullOrEmpty(historicalAddress.Floor.ToString()))
-                {
-                    addressDict.Add("etage", historicalAddress.Floor.ToString());
-                }
-                if (!string.IsNullOrEmpty(historicalAddress.Door.ToString()))
-                {
-                    addressDict.Add("dør", historicalAddress.Door.ToString());
-                }
-            }
-            catch (Exception ex)
-            {
-                string addressWrapper = string.Format("historicalAddress: {0}", historicalAddress.ToString());
-                Admin.LogException(ex, addressWrapper);
-            }
-            string test = string.Format("historicalAddress dict as JSON: {0}", JsonConvert.SerializeObject(addressDict));
-            Admin.LogSuccess(test);
-            return addressDict;
-        }
 
         public static Dictionary<string, string> ConstructAddressDictWithCurrentAddressWrapper(CurrentAddressWrapper currentAddressWrapper)
         {
@@ -277,15 +249,37 @@ namespace CprBroker.DAWA
             { 
                 addressDict.Add("kommunekode", currentAddressWrapper.ClearWrittenAddress.MunicipalityCode.ToString());
                 addressDict.Add("vejkode", currentAddressWrapper.ClearWrittenAddress.StreetCode.ToString());
-                addressDict.Add("husnr", currentAddressWrapper.ClearWrittenAddress.HouseNumber.ToString());
+
+                string houseNo = currentAddressWrapper.ClearWrittenAddress.HouseNumber.ToString();
+                if (houseNo.StartsWith("0"))
+                {
+                    addressDict.Add("husnr", houseNo.TrimStart('0'));
+                }
+                else
+                {
+                    addressDict.Add("husnr", houseNo);
+                }
 
                 if (!string.IsNullOrEmpty(currentAddressWrapper.ClearWrittenAddress.Floor.ToString()))
                 {
-                    addressDict.Add("etage", currentAddressWrapper.ClearWrittenAddress.Floor.ToString());
+                    string etage = currentAddressWrapper.ClearWrittenAddress.Floor.ToString();
+                    if(etage.StartsWith("0"))
+                    {
+                        addressDict.Add("etage", etage.TrimStart('0'));
+                    }
+                    addressDict.Add("etage", etage);
                 }
                 if (!string.IsNullOrEmpty(currentAddressWrapper.ClearWrittenAddress.Door.ToString()))
                 {
-                    addressDict.Add("dør", currentAddressWrapper.ClearWrittenAddress.Door.ToString());
+                    string door = currentAddressWrapper.ClearWrittenAddress.Door.ToString();
+                    if(door.StartsWith("0"))
+                    {
+                        addressDict.Add("dør", door.TrimStart('0'));
+                    }
+                    else
+                    {
+                        addressDict.Add("dør", door);
+                    }
                 }
             }
             catch(Exception ex)
