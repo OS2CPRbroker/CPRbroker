@@ -52,7 +52,7 @@ using CprBroker.Utilities;
 using CprBroker.Engine;
 using CprBroker.Providers.CPRDirect;
 using CprBroker.Providers.DPR;
-using CprBroker.Utilities;
+using CprBroker.DAWA;
 
 namespace CprBroker.DBR
 {
@@ -285,12 +285,22 @@ namespace CprBroker.DBR
                     .Key ?? 0;
             }
 
+            // Preparing data for DAWA request
+            Dictionary<string, string> urlParamDict = new Dictionary<string, string>()
+            {
+                {"kommunekode", komKod.ToString().PadLeft(4, '0')},
+            };
+
+            // Calling DAWA
+            string kommuneServiceResponseJSON = DawaClient.Lookup("kommuner", urlParamDict);
+            Dictionary<string, string> result = DawaClient.ParseMunicipalResponse(kommuneServiceResponseJSON);
+
             return new Update()
             {
                 DB_VERSION = "2013-02",
                 HISMDR = 60,
                 KOMKOD = komKod,
-                KOMNVN = Authority.GetAuthorityNameByCode(komKod.ToString()) ?? "",
+                KOMNVN = result["munName"] ?? "",
                 // Non used columns
                 CICSID = null,
                 KUNDENR = null,
