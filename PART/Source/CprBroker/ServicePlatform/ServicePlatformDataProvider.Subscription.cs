@@ -110,10 +110,13 @@ namespace CprBroker.Providers.ServicePlatform
                         switch (returnCode)
                         {
                             case ReturnCodePNR.ADDED:
-                                //success
+                                // Success.
                                 break;
                             case ReturnCodePNR.ALREADY_EXISTED:
-                                //success
+                                // Indirectly success. Normally this is NOT an issue, because the goal is already achieved.
+                                // If this is in fact an issue you can check [<CprBrokerDb>].[dbo].[DataProviderCall]
+                                // to see if there was an issue unsubscribing for the given citizen's PNR in the past.
+                                Admin.LogSuccess("Subscription for <" + personIdentifier.UUID + "> already exists.");
                                 break;
                             case ReturnCodePNR.NON_EXISTING_PNR:
                                 throw new Exception(String.Format("Error placing subscription for UUID <{0}>, service platform returns NON_EXISTING_PNR.", personIdentifier.UUID));
@@ -161,7 +164,11 @@ namespace CprBroker.Providers.ServicePlatform
                                 //success
                                 break;
                             case ReturnCodePNR.NON_EXISTING_PNR:
-                                throw new Exception(String.Format("Error removing subscription for UUID <{0}>, service platform returns NON_EXISTING_PNR.", personIdentifier.UUID));
+                                // Indirectly success. Normally this is NOT an issue, because the goal is already achieved.
+                                // If this is in fact an issue you can check [<CprBrokerDb>].[dbo].[DataProviderCall]
+                                // to see if there was an issue subscribing for the given citizen's PNR in the past.
+                                Admin.LogSuccess("Subscription for <" + personIdentifier.UUID + "> does not exists.");
+                                break;
                             default:
                                 throw new Exception(String.Format("Error removing subscription for UUID <{0}>, service platform returns unexpected code <{1}>.", personIdentifier.UUID, returnCode));
                         }
