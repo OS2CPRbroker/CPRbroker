@@ -53,8 +53,10 @@ namespace CprBroker.Providers.CPRDirect
     {
         static Constants()
         {
+            // Reference: "CPR Direkte Grænsefladebeskrivelse OFF4.pdf"(v7.0), p.11.
             _ErrorCodes = new Dictionary<string, string>();
-            _ErrorCodes["01"] = "Incorrect user ID / remote server)";
+            _ErrorCodes["00"] = "No error / Success";
+            _ErrorCodes["01"] = "Incorrect user ID / remote server";
             _ErrorCodes["02"] = "Remote server expired, new remote server required";
             _ErrorCodes["03"] = "New remote server does not meet the format (8 characters, at least 2 numbers and 2 letters and not previously used)";
             _ErrorCodes["04"] = "No access to CPR";
@@ -65,13 +67,25 @@ namespace CprBroker.Providers.CPRDirect
             _ErrorCodes["09"] = "Serious problem. Meaning: There is no connection between the client and CPR system; contact CSC Service Center by phone 36146192";
             _ErrorCodes["10"] = "ABON_TYPE unknown";
             _ErrorCodes["11"] = "DATA_TYPE unknown";
-            _ErrorCodes["12"] = "(reserved error number)";
+            _ErrorCodes["12"] = "Error code 12 (reserved error number)";
             _ErrorCodes["13"] = "(reserved error number)";
-            _ErrorCodes["14"] = "(reserved error number)";
-            _ErrorCodes["15"] = "(reserved error number)";
+            _ErrorCodes["14"] = "BRUGER-ID does not have access to transaction(CTPROFILE is temporarily closed)";
+            _ErrorCodes["15"] = "Error code 15 (reserved error number)";
             _ErrorCodes["16"] = "IP address is incorrect";
+            _ErrorCodes["17"] = "PNR not specified";
+            _ErrorCodes["18"] = "BRUGER-ID does not have access to transaction(CTPROFILE is not active)";
+            _ErrorCodes["19"] = "Error code 19 (reserved error number)";
+            _ErrorCodes["20"] = "Error code 20 (reserved error number)";
+            _ErrorCodes["21"] = "Error code 21 (reserved error number)";
+            _ErrorCodes["22"] = "Error code 22 (reserved error number)";
+            _ErrorCodes["23"] = "Error code 23 (reserved error number)";
+            _ErrorCodes["24"] = "BRUGER-ID does not have access to transaction(CTPERSKOD_PROFIL is temporarily closed)";
+            _ErrorCodes["25"] = "Error code 25 (reserved error number)";
+            _ErrorCodes["26"] = "Error code 26 (reserved error number)";
+            _ErrorCodes["27"] = "Error code 27 (reserved error number)";
+            _ErrorCodes["28"] = "BRUGER-ID does not have access to transaction(CTPERSKOD_PROFIL is not active)";
 
-            for (int err = 19; err < 100; err++)
+            for (int err = 29; err < 100; err++)
             {
                 _ErrorCodes[err.ToString()] = "(reserved error number)";
             }

@@ -78,7 +78,9 @@ namespace CprBroker.Engine
                                 }
                             }
 
-                            Local.Admin.LogFormattedSuccess("TcpServer <{0}>: processing message <{1}>", this.ToString(), this.TextEncoding.GetString(messageBytes));
+                            Local.Admin.LogFormattedSuccess("TcpServer <{0}>: processing operation <{1}>",
+                                this.ToString(), this.TextEncoding.GetString(messageBytes).Substring(0, 2)
+                                );
                             var responseBytes = ProcessMessage(messageBytes.Take(totalReadBytes).ToArray());
                             stream.Write(responseBytes, 0, responseBytes.Length);
                         }

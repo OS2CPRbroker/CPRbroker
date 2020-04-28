@@ -9,6 +9,8 @@ using System.IO;
 using CprBroker.Engine.Local;
 using CprBroker.Utilities;
 using CprBroker.Engine;
+using CprBroker.PartInterface;
+using CprBroker.Schemas.Part;
 
 namespace BatchClient
 {
@@ -59,7 +61,13 @@ namespace BatchClient
                     var response = CprBroker.Providers.CPRDirect.Constants.TcpClientEncoding.GetString(data, 0, bytes);
                     Log(response);
                     string errorCode = response.Substring(CprBroker.Providers.CPRDirect.Constants.ResponseLengths.ErrorCodeIndex, CprBroker.Providers.CPRDirect.Constants.ResponseLengths.ErrorCodeLength);
-                    Admin.LogFormattedSuccess("CPR client: PNR <{0}>, status code <{1}>", pnr, errorCode);
+
+                    PartManager pm = new PartManager();
+                    BrokerContext bc = BrokerContext.Current;
+                    GetUuidOutputType UUIDOutput = pm.GetUuid(bc.UserToken.ToString(), bc.ApplicationToken.ToString(), pnr);
+                    string cprBrokerUUID = UUIDOutput.UUID;
+
+                    Admin.LogFormattedSuccess("CPR client: UUID <{0}>, status code <{1}>", cprBrokerUUID, errorCode);
 
                     if (CprBroker.Providers.CPRDirect.Constants.ErrorCodes.ContainsKey(errorCode))
                     {
