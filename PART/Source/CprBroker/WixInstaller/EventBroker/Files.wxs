@@ -21,6 +21,16 @@
     </ComponentGroup>
 
     <ComponentGroup Id="CMPGRP_EVENT_bin">
+      <Component Id="CMP_EVENT_bin_DAWA_DLL" Directory="EVENT_bin">
+      <File Id="FILE_EVENT_bin_DAWA_DLL" Source="$(var.SitePath)bin\CprBroker.DAWA.dll" KeyPath="yes">
+        <CopyFile Id="FILE_EVENT_bin_Backend_CprBroker.DAWA.dll" DestinationDirectory="EVENT_Backend"/>
+      </File>
+      </Component>
+      <Component Id="CMP_EVENT_bin_Newtonsoft_Json_DLL" Directory="EVENT_bin">
+        <File Id="FILE_EVENT_bin_Newtonsoft_Json_DLL" Source="$(var.SitePath)bin\Newtonsoft.Json.dll" KeyPath="yes">
+          <CopyFile Id="FILE_EVENT_bin_Backend_Newtonsoft.Json.dll" DestinationDirectory="EVENT_Backend"/>
+        </File>
+      </Component>
       <Component Id="CMP_EVENT_bin_CprBroker.Config.dll" Directory="EVENT_bin">
         <File Id="FILE_EVENT_bin_CprBroker.Config.dll" Source="$(var.SitePath)bin\CprBroker.Config.dll" KeyPath="yes">
           <CopyFile Id="FILE_EVENT_bin_Backend_CprBroker.Config.dll" DestinationDirectory="EVENT_Backend"/>

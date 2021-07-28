@@ -42,6 +42,12 @@
     </ComponentGroup>
 
     <ComponentGroup Id="CMPGRP_bin">
+      <Component Id="CMP_CPR_DAWA_DLL" Directory="CPR_bin">
+        <File Id="FILE_CPR_bin_DAWA_DLL" Source="$(var.SitePath)bin\CprBroker.DAWA.dll" KeyPath="yes"/>
+      </Component>
+      <Component Id="CMP_CPR_Newtonsoft_Json_DLL" Directory="CPR_bin">
+        <File Id="FILE_CPR_bin_Newtonsoft_Json_DLL" Source="$(var.SitePath)bin\Newtonsoft.Json.dll" KeyPath="yes"/>
+      </Component>
       <Component Id="CMP_CPR_Config_Dll" Directory="CPR_bin">
         <File Id="FILE_CPR_bin_Config_DLL" Source="$(var.SitePath)bin\CprBroker.Config.dll" KeyPath="yes"/>
       </Component>

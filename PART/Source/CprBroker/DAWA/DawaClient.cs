@@ -43,7 +43,6 @@
 
 using CprBroker.Engine.Local;
 using CprBroker.Providers.CPRDirect;
-using CprBroker.Schemas.Part;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

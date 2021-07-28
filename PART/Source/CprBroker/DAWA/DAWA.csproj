@@ -35,7 +35,6 @@
     <Reference Include="CprBroker.Engine">
       <HintPath>..\..\Core\Engine\bin\Debug\CprBroker.Engine.dll</HintPath>
     </Reference>
-    <Reference Include="CprBroker.Schemas, Version=2.3.8.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="CprBroker.Utilities, Version=2.3.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Core\Engine\bin\Debug\CprBroker.Utilities.dll</HintPath>
