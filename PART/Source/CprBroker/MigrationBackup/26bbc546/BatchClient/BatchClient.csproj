@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{895FDF74-8A3F-475B-B28D-B88BAB9C941E}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BatchClient</RootNamespace>
+    <AssemblyName>BatchClient</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug.Mono|AnyCPU'">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CprBroker.Config, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Data, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Engine">
+      <HintPath>..\..\Core\Output\CprBroker.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Schemas, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Schemas.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Utilities, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\..\Dll\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CallSearch.cs" />
+    <Compile Include="CleanInvalidPNRs.cs" />
+    <Compile Include="CompareDatabasePerformance.cs" />
+    <Compile Include="CompareDbr.cs" />
+    <Compile Include="CompareExpressionToSimplified.cs" />
+    <Compile Include="ConvertCprDirectToFiles.cs" />
+    <Compile Include="GenerateCprDirectFromExtracts.cs" />
+    <Compile Include="List.cs" />
+    <Compile Include="DoNothing.cs" />
+    <Compile Include="GetUuids.cs" />
+    <Compile Include="GetUuidsFromPersonMaster.cs" />
+    <Compile Include="LoadAllDataFromDatabase.cs" />
+    <Compile Include="LoadDummyData.cs" />
+    <Compile Include="LogFileAnalyzer.cs" />
+    <Compile Include="MergeServicePlatformSubscriptions.cs" />
+    <Compile Include="Part.cs" />
+    <Compile Include="PopulateSearchCache.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Read.cs" />
+    <Compile Include="RefreshData.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="RegenerateContents.cs" />
+    <Compile Include="RegenerateCprDirect.cs" />
+    <Compile Include="RegenerateKMD.cs" />
+    <Compile Include="Service References\PersonMaster\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="SortContentsByDate.cs" />
+    <Compile Include="SplitLogFile.cs" />
+    <Compile Include="SyncDPR.cs" />
+    <Compile Include="TestDBR.cs" />
+    <Compile Include="TestDPRConversion.cs" />
+    <Compile Include="UbsubscribeCprDirect.cs" />
+    <Compile Include="UpdateGeoLocationInformation.cs" />
+    <Compile Include="UpdatePostCodeInformation.cs" />
+    <Compile Include="Utilities.cs" />
+    <Compile Include="ValidateCprNumbers.cs" />
+    <Compile Include="Web References\Part\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="loggingConfiguration.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="log4net.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\PersonMaster\BasicOp.wsdl" />
+    <None Include="Service References\PersonMaster\BasicOp1.wsdl" />
+    <None Include="Service References\PersonMaster\personmaster.wsdl" />
+    <None Include="Service References\PersonMaster\personmaster.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PersonMaster\personmaster1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PersonMaster\personmaster2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PersonMaster\personmaster3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PersonMaster\PersonmasterServiceLibrary1.wsdl" />
+    <None Include="Service References\PersonMaster\PersonmasterServiceLibrary4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PersonMaster\PersonmasterServiceLibrary5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PersonMaster\PersonmasterServiceLibrary6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PersonMaster\PersonmasterServiceLibrary7.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\Part\GetUuidArrayOutputType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\Part\GetUuidOutputType1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\Part\LaesOutputType1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\Part\ListOutputType11.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\Part\Part.disco" />
+    <None Include="Web References\Part\Part.wsdl" />
+    <None Include="Web References\Part\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\Part\SoegListOutputType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\Part\SoegOutputType1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://localhost:1551/Services/Part.asmx">
+      <UrlBehavior>Static</UrlBehavior>
+      <RelPath>Web References\Part\</RelPath>
+      <UpdateFromURL>http://localhost:1551/Services/Part.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>DPRClientTester_Part_Part</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CPRDirect\CPRDirect.csproj">
+      <Project>{EDDB494D-782D-4D45-8599-633057B9B203}</Project>
+      <Name>CPRDirect</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CprServices\CprServices.csproj">
+      <Project>{F9D6A4EA-9DB1-4BA7-A5BE-0C183FBABBF8}</Project>
+      <Name>CprServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DBR.Tests.Comparison\DBR.Tests.Comparison.csproj">
+      <Project>{8155a4be-ac2d-4950-a930-e0062655b60c}</Project>
+      <Name>DBR.Tests.Comparison</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DBR.Tests\DBR.Tests.csproj">
+      <Project>{FF2FFCD5-6091-4B10-8FD9-C737BD45C86B}</Project>
+      <Name>DBR.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DBR\DBR.csproj">
+      <Project>{f6e48545-473f-4133-90f7-b93a4612f50f}</Project>
+      <Name>DBR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DPR\DPR.csproj">
+      <Project>{F98E5179-88E3-404E-83BE-54F0A3E7DBC0}</Project>
+      <Name>DPR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KMD\KMD.csproj">
+      <Project>{47B58366-342A-4699-9CF5-E13FB8F8B413}</Project>
+      <Name>KMD</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Local.Search\Local.Search.csproj">
+      <Project>{700c3c48-4833-4136-b6b4-6b6d8890aa13}</Project>
+      <Name>Local.Search</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Local\Local.csproj">
+      <Project>{74212D20-BB98-401F-A5F7-03669B2CD07A}</Project>
+      <Name>Local</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PartInterface.Tests\PartInterface.Tests.csproj">
+      <Project>{06CCC703-83F2-44B9-B67A-F7F3A0071E2D}</Project>
+      <Name>PartInterface.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PartInterface\PartInterface.csproj">
+      <Project>{DA42D8BB-24D3-4416-A0BD-B98857F249AD}</Project>
+      <Name>PartInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PersonMaster\PersonMaster.csproj">
+      <Project>{51186183-BEEA-4B6D-8865-B7070EFCA126}</Project>
+      <Name>PersonMaster</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServicePlatform.Tests\ServicePlatform.Tests.csproj">
+      <Project>{8f016e38-d959-4eaf-9e1a-07d395e764fe}</Project>
+      <Name>ServicePlatform.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServicePlatform\ServicePlatform.csproj">
+      <Project>{233be1ab-28da-4b2f-8cc0-4bb3d88adc95}</Project>
+      <Name>ServicePlatform</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ReadMe.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Service References\PersonMaster\configuration91.svcinfo" />
+    <None Include="Service References\PersonMaster\configuration.svcinfo" />
+    <None Include="Service References\PersonMaster\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\PersonMaster\PersonmasterServiceLibrary1.disco" />
+    <None Include="Service References\PersonMaster\personmaster.disco" />
+    <Content Include="TestDates.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\PersonMaster\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetFileName) $(SolutionDir)Output\ /y</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

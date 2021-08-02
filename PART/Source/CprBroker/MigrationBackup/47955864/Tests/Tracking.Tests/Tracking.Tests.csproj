@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{119AC305-96EE-4A08-9FCF-060A826EE82C}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CprBroker.Tests.Tracking</RootNamespace>
+    <AssemblyName>CprBroker.Tests.Tracking</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CprBroker.Data, Version=2.2.6.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Engine, Version=2.2.6.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.EventBroker">
+      <HintPath>..\..\EventBroker\Output\CprBroker.EventBroker.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Schemas, Version=2.2.6.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Schemas.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Utilities, Version=2.2.6.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="RemovePersonDataProviderTests.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="CleanupDetectionEnqueuerTests.cs" />
+    <Compile Include="CleanupQueueTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrackingDataProvicerTests.GetSubscribers.cs" />
+    <Compile Include="TrackingDataProvicerTests.GetPersonUsage.cs" />
+    <Compile Include="TrackingDataProvicerTests.EnumeratePersons.cs" />
+    <Compile Include="TrackingDataProviderTests.PersonLivesInExcludedMunicipality.cs" />
+    <Compile Include="TrackingDataProviderTests.GetRemovalDecision.cs" />
+    <Compile Include="TrackingDataProviderTests.HasSubscribers.cs" />
+    <Compile Include="TrackingDataProviderTests.RemovePerson.cs" />
+    <Compile Include="Utilities.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CPRDirect.Tests\CPRDirect.Tests.csproj">
+      <Project>{f9f2357b-981f-4048-96c5-315ee3872276}</Project>
+      <Name>CPRDirect.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CPRDirect\CPRDirect.csproj">
+      <Project>{eddb494d-782d-4d45-8599-633057b9b203}</Project>
+      <Name>CPRDirect</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DBR\DBR.csproj">
+      <Project>{f6e48545-473f-4133-90f7-b93a4612f50f}</Project>
+      <Name>DBR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DPR\DPR.csproj">
+      <Project>{f98e5179-88e3-404e-83be-54f0a3e7dbc0}</Project>
+      <Name>DPR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Local.Search\Local.Search.csproj">
+      <Project>{700c3c48-4833-4136-b6b4-6b6d8890aa13}</Project>
+      <Name>Local.Search</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PartInterface.Tests\PartInterface.Tests.csproj">
+      <Project>{06ccc703-83f2-44b9-b67a-f7f3a0071e2d}</Project>
+      <Name>PartInterface.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PartInterface\PartInterface.csproj">
+      <Project>{da42d8bb-24d3-4416-a0bd-b98857f249ad}</Project>
+      <Name>PartInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tracking\Tracking.csproj">
+      <Project>{0a0ed81d-1f70-444b-a61f-837955728598}</Project>
+      <Name>Tracking</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <Compile Include="TrackingDataProviderTests.Usage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

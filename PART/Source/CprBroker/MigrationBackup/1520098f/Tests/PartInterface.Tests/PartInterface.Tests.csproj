@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{06CCC703-83F2-44B9-B67A-F7F3A0071E2D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PartInterface.Tests</RootNamespace>
+    <AssemblyName>PartInterface.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CprBroker.Config, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Data">
+      <HintPath>..\..\Core\Output\CprBroker.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Engine">
+      <HintPath>..\..\Core\Output\CprBroker.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.EventBroker">
+      <HintPath>..\..\EventBroker\Output\CprBroker.EventBroker.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Installers">
+      <HintPath>..\..\Core\Output\CprBroker.Installers.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Installers.EventBrokerInstallers">
+      <HintPath>..\..\EventBroker\Output\CprBroker.Installers.EventBrokerInstallers.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.PartInterface.Tracking">
+      <HintPath>..\Web\bin\CprBroker.PartInterface.Tracking.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Schemas">
+      <HintPath>..\..\Core\Output\CprBroker.Schemas.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Utilities">
+      <HintPath>..\..\Core\Output\CprBroker.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dll\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dll\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CivilStatusWrapperTests.cs" />
+    <Compile Include="GetUuidArraySubMethodInfo.Tests.cs" />
+    <Compile Include="GetUuidArrayFacadeMethodInfo.Tests.cs" />
+    <Compile Include="IPerCallDataProviderHelperTests.cs" />
+    <Compile Include="ListFacadeMethodInfoTests.cs" />
+    <Compile Include="Manager.Base.Tests.cs" />
+    <Compile Include="Manager.Part.Tests.cs" />
+    <Compile Include="MatchRule.Tests.cs" />
+    <Compile Include="Period\PeriodLookupInputTests.cs" />
+    <Compile Include="PersonRegistration.Tests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadFacadeMethodInfoTests.cs" />
+    <Compile Include="ReadSubMethodInfoTests.cs" />
+    <Compile Include="StringsTests.cs" />
+    <Compile Include="Stubs\GuidDataProvider.cs" />
+    <Compile Include="Stubs\GuidFacade.cs" />
+    <Compile Include="Stubs\GuidMethodInfo.cs" />
+    <Compile Include="TestBase.cs" />
+    <Compile Include="UpdateDatabasePartTests.cs" />
+    <Compile Include="Utilities.cs" />
+    <Compile Include="UuidCacheTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CprBroker.CustomActions\CprBroker.CustomActions.csproj">
+      <Project>{EBE4DA5E-1E87-4071-B8A3-EC6096B35B31}</Project>
+      <Name>CprBroker.CustomActions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DBR\DBR.csproj">
+      <Project>{f6e48545-473f-4133-90f7-b93a4612f50f}</Project>
+      <Name>DBR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DPR\DPR.csproj">
+      <Project>{f98e5179-88e3-404e-83be-54f0a3e7dbc0}</Project>
+      <Name>DPR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PartInterface\PartInterface.csproj">
+      <Project>{DA42D8BB-24D3-4416-A0BD-B98857F249AD}</Project>
+      <Name>PartInterface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetFileName) $(SolutionDir)Output\ /y</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
