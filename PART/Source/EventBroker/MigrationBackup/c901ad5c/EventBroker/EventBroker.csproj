@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D8FC2102-488A-480A-8197-8842B8192E68}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CprBroker.EventBroker</RootNamespace>
+    <AssemblyName>CprBroker.EventBroker</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CprBroker.Config, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Data, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.DBR">
+      <HintPath>..\..\CprBroker\Output\CprBroker.DBR.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Engine, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.PartInterface">
+      <HintPath>..\..\CprBroker\Output\CprBroker.PartInterface.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Providers.CPRDirect">
+      <HintPath>..\..\CprBroker\Output\CprBroker.Providers.CPRDirect.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Schemas, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Schemas.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\Channel.cs" />
+    <Compile Include="Data\ChannelType.cs" />
+    <Compile Include="Data\EventBrokerDataContext.cs">
+      <DependentUpon>EventBrokerDataContext.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Data\EventBrokerDataContext.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EventBrokerDataContext.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Data\EventNotification.cs" />
+    <Compile Include="Data\Subscription.cs" />
+    <Compile Include="Data\SubscriptionType.cs" />
+    <Compile Include="Notifications\BudgetChecker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Notifications\CprDirectCleaner.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Notifications\CPRDirectDownloader.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Notifications\CprBrokerEventEnqueuer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Notifications\CprBrokerEventEnqueuer.Designer.cs">
+      <DependentUpon>CprBrokerEventEnqueuer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Notifications\CPRDirectExtractor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Notifications\CPRDirectIOExecuter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Notifications\CriteriaSubscriptionPersonPopulator.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Notifications\DataChangeEventPuller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Subscriptions\SubscribeOnCriteriaFacadeMethod.cs" />
+    <Compile Include="Subscriptions\GetActiveSubscriptionsListFacadeMethod.cs" />
+    <Compile Include="Subscriptions\SubscribeOnBirthdateFacadeMethod.cs" />
+    <Compile Include="Subscriptions\SubscribeFacadeMethod.cs" />
+    <Compile Include="Subscriptions\ISubscriptionDataProvider.cs" />
+    <Compile Include="Subscriptions\SubscriptionManager.cs" />
+    <Compile Include="Notifications\BirthdateEventEnqueuer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Notifications\BirthdateEventEnqueuer.Designer.cs">
+      <DependentUpon>BirthdateEventEnqueuer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Notifications\Channel.cs" />
+    <Compile Include="Notifications\DataChangeEventEnqueuer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Notifications\DataChangeEventEnqueuer.Designer.cs">
+      <DependentUpon>DataChangeEventEnqueuer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Notifications\NotificationSender.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Notifications\NotificationSender.Designer.cs">
+      <DependentUpon>NotificationSender.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Subscriptions\SubscriptionDataProvider.cs" />
+    <Compile Include="Subscriptions\UnsubscribeFacadeMethod.cs" />
+    <Compile Include="Web References\EventsService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\NotificationService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\EventBrokerDataContext.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>EventBrokerDataContext.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Data\Init\ChannelType.csv" />
+    <None Include="Data\Init\SubscriptionType.csv" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Web References\EventsService\Events.wsdl" />
+    <None Include="Web References\NotificationService\Notification.wsdl" />
+    <None Include="Web References\NotificationService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://localhost:1551/Services/Events.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\EventsService\</RelPath>
+      <UpdateFromURL>http://localhost:1551/Services/Events.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>CprBroker_EventBroker_EventsService_Events</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://localhost:1552/Templates/Notification.wsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\NotificationService\</RelPath>
+      <UpdateFromURL>http://localhost:1552/Templates/Notification.wsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>CprBroker_EventBroker_NotificationService_Notification</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Data\EventBrokerDataContext.dbml.layout">
+      <DependentUpon>EventBrokerDataContext.dbml</DependentUpon>
+    </None>
+    <EmbeddedResource Include="Notifications\BirthdateEventEnqueuer.resx">
+      <DependentUpon>BirthdateEventEnqueuer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Notifications\NotificationSender.resx">
+      <DependentUpon>NotificationSender.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\EventsService\BasicOutputTypeOfArrayOfDataChangeEventInfo.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\EventsService\BasicOutputTypeOfArrayOfPersonBirthdate.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\EventsService\Events.disco" />
+    <None Include="Web References\EventsService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Data\Init\UpdatePersonLists.sql" />
+    <None Include="Data\Init\SubscriptionPerson.sql" />
+    <None Include="Data\Init\SubscriptionCriteriaMatch.sql" />
+    <None Include="Data\Init\PersonBirthdate.sql" />
+    <None Include="Data\Init\IsBirthdateEvent.sql" />
+    <None Include="Data\Init\EventNotification.sql" />
+    <None Include="Data\Init\EnqueueDataChangeEventNotifications.sql" />
+    <None Include="Data\Init\EnqueueBirthdateEventNotifications.sql" />
+    <None Include="Data\Init\DataChangeEvent.sql" />
+    <None Include="Data\Init\BirthdateEventNotification.sql" />
+    <Content Include="Data\Init\BirthdateSubscription.sql" />
+    <Content Include="Data\Init\Channel.sql" />
+    <Content Include="Data\Init\ChannelType.sql" />
+    <Content Include="Data\Init\DataSubscription.sql" />
+    <Content Include="Data\Init\Subscription.sql" />
+    <Content Include="Data\Init\SubscriptionType.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetFileName) $(SolutionDir)Output\ /y</PostBuildEvent>
+  </PropertyGroup>
+</Project>

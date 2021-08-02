@@ -1,0 +1,454 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F9F2357B-981F-4048-96C5-315EE3872276}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CprBroker.Tests.CPRDirect</RootNamespace>
+    <AssemblyName>CprBroker.Tests.CPRDirect</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CprBroker.Data, Version=1.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Engine, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Schemas, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Schemas.dll</HintPath>
+    </Reference>
+    <Reference Include="CprBroker.Utilities, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Core\Output\CprBroker.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dll\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.core, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnitTestAdapter.2.0.0\lib\nunit.core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="nunit.core.interfaces, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnitTestAdapter.2.0.0\lib\nunit.core.interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.util, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnitTestAdapter.2.0.0\lib\nunit.util.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NUnit.VisualStudio.TestAdapter, Version=2.0.0.0, Culture=neutral, PublicKeyToken=4cb40d35494691ac, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnitTestAdapter.2.0.0\lib\NUnit.VisualStudio.TestAdapter.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ExtractPathsTests.cs" />
+    <Compile Include="Other\RegistreringType1.Tests.cs" />
+    <Compile Include="Queues\DbrBaseQueueTests.cs" />
+    <Compile Include="ExtractManager.Tests.cs" />
+    <Compile Include="Queues\ExtractStagingQueueTests.cs" />
+    <Compile Include="HistoryContinuity\Address.cs" />
+    <Compile Include="Helpers.cs" />
+    <Compile Include="HistoryContinuity\Base.cs" />
+    <Compile Include="HistoryContinuity\Church.cs" />
+    <Compile Include="HistoryContinuity\Citizenship.cs" />
+    <Compile Include="HistoryContinuity\Name.cs" />
+    <Compile Include="HistoryContinuity\Pnr.cs" />
+    <Compile Include="Objects\Authority.Tests.cs" />
+    <Compile Include="Objects\BirthRegistrationInformation.Tests.cs" />
+    <Compile Include="Objects\ChildTests.cs" />
+    <Compile Include="Objects\ChurchInformation.Tests.cs" />
+    <Compile Include="Objects\ClearWrittenAddress.Tests.cs" />
+    <Compile Include="Objects\CompositeWrapper.Tests.cs" />
+    <Compile Include="Objects\IndividualResponse.Relations.Tests.cs" />
+    <Compile Include="Objects\EgenskabInterval.Tests.cs" />
+    <Compile Include="Partials\PartialRecordTests.cs" />
+    <Compile Include="Partials\ReadTests.cs" />
+    <Compile Include="Persons\P_0101520013.cs" />
+    <Compile Include="Persons\P_0101980014.cs" />
+    <Compile Include="Persons\P_0108610069.cs" />
+    <Compile Include="Persons\P_0307610078.cs" />
+    <Compile Include="Tools\Converters.Tests.cs" />
+    <Compile Include="Tools\CPRDirectExtractDataProvider.Ftp.Tests.cs" />
+    <Compile Include="Objects\CurrentCitizenship.Tests.cs" />
+    <Compile Include="Objects\CurrentCivilStatus.Tests.cs" />
+    <Compile Include="Objects\CurrentDepartureData.Tests.cs" />
+    <Compile Include="Objects\CurrentNameInformationTests.cs" />
+    <Compile Include="Objects\CurrentSeparation.Tests.cs" />
+    <Compile Include="Objects\Disempowerment.Tests.cs" />
+    <Compile Include="Tools\ExtractTests.cs" />
+    <Compile Include="Objects\HistoricalCivilStatusTests.cs" />
+    <Compile Include="Objects\HistoricalName.Tests.cs" />
+    <Compile Include="Objects\HistoricalRecords.Tests.cs" />
+    <Compile Include="Objects\IndividualRequest.Tests.cs" />
+    <Compile Include="Objects\IndividualResponse.Attributes.Tests.cs" />
+    <Compile Include="Objects\IndividualResponse.States.Tests.cs" />
+    <Compile Include="Objects\IndividualResponse.Tests.cs" />
+    <Compile Include="Objects\LineWrapper.Tests.cs" />
+    <Compile Include="Tools\MinMaxOccurs.Tests.cs" />
+    <Compile Include="Objects\ParentalAuthority.Tests.cs" />
+    <Compile Include="Objects\ParentsInformation.Tests.cs" />
+    <Compile Include="Objects\PersonInformation.Tests.cs" />
+    <Compile Include="Persons\Person.cs" />
+    <Compile Include="Persons\P_0107529039.cs" />
+    <Compile Include="Persons\P_0708614327.cs" />
+    <Compile Include="Persons\P_0708614866.cs" />
+    <Compile Include="Persons\P_0709614096.cs" />
+    <Compile Include="Persons\P_0702614147.cs" />
+    <Compile Include="Persons\P_0707614218.cs" />
+    <Compile Include="Persons\P_0709614045.cs" />
+    <Compile Include="Persons\P_0909610028.cs" />
+    <Compile Include="Persons\P_0909610036.cs" />
+    <Compile Include="Persons\P_2906980013.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CPRDirect\CPRDirect.csproj">
+      <Project>{EDDB494D-782D-4D45-8599-633057B9B203}</Project>
+      <Name>CPRDirect</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Local\Local.csproj">
+      <Project>{74212D20-BB98-401F-A5F7-03669B2CD07A}</Project>
+      <Name>Local</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PartInterface.Tests\PartInterface.Tests.csproj">
+      <Project>{06ccc703-83f2-44b9-b67a-f7f3a0071e2d}</Project>
+      <Name>PartInterface.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PartInterface\PartInterface.csproj">
+      <Project>{DA42D8BB-24D3-4416-A0BD-B98857F249AD}</Project>
+      <Name>PartInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PersonMaster\PersonMaster.csproj">
+      <Project>{51186183-BEEA-4B6D-8865-B7070EFCA126}</Project>
+      <Name>PersonMaster</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Objects\ProtectionType.Tests.cs" />
+    <Compile Include="Utilities.cs" />
+    <Compile Include="Objects\Wrapper.Tests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Objects\IndividualResponse.Parser.Tests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\4357.txt" />
+    <Content Include="loggingConfiguration.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="packages.config" />
+    <None Include="Resources\U12170-P opgavenr 110901 ADRNVN FE_FixedLength" />
+    <None Include="App.config" />
+    <None Include="Resources\U12170-P opgavenr 110901 ADRNVN FE" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0101005038.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0101429059.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0101520013.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0101965058.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0101980014.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0107529039.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0108610018.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0108610069.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0307610078.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0701614011.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0701614038.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0701614089.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0702614074.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0702614082.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0702614147.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0702614155.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0703614167.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0706614184.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0706614818.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0707614218.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0707614226.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0707614234.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0707614285.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0707614293.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0708610038.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0708610089.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0708614246.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0708614319.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0708614327.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0708614335.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0708614866.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709610015.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709610058.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614037.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614045.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614096.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614118.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614126.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614169.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614215.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614231.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614258.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614304.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614347.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614398.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614401.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614428.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614452.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614495.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614568.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614592.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614673.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614738.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614754.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0709614762.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0710614326.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0711614354.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0712614382.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0712614455.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0901414025.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0901414084.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0904414131.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0905414143.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0909610028.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0909610036.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0909970016.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_0912414426.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_1303814074.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_1306814172.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_1306814180.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_1307610015.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_1312814362.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_2802363039.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_2802980011.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_2906980013.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_3006980014.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_3012995007.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_3112000010.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_3112420028.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PNR_3112970079.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

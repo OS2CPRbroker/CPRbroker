@@ -79,13 +79,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Core\Output\CprBroker.Utilities.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\..\Dll\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
@@ -99,6 +92,7 @@
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -171,7 +165,6 @@
     <None Include="log4net.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -339,6 +332,14 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\PersonMaster\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="log4net">
+      <Version>2.0.12</Version>
+    </PackageReference>
+    <PackageReference Include="NUnit">
+      <Version>2.6.4</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
