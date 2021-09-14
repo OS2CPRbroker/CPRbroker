@@ -53,7 +53,7 @@ namespace CprBroker.DAWA
 {
     public class DawaClient
     {
-        private const string URL = "https://dawa.aws.dk";
+        private const string URL = "https://api.dataforsyningen.dk";
 
         public static string Lookup(string serviceName, Dictionary<string, string> inputDict)
         {
@@ -66,8 +66,7 @@ namespace CprBroker.DAWA
             }
             else
             {
-                Admin.LogError("DawaClient.Lookup returned NULL");
-                //Console.WriteLine("DawaClient.Lookup returned NULL");
+                Admin.LogError("DawaClient.CallService() returned NULL");
                 return null;
             }
         }
@@ -138,7 +137,6 @@ namespace CprBroker.DAWA
             catch (Exception ex)
             {
                 Admin.LogError(ex.ToString());
-                //Console.WriteLine(ex.ToString());
                 return null;
             }
 
@@ -166,7 +164,6 @@ namespace CprBroker.DAWA
             catch (Exception ex)
             {
                 Admin.LogError(ex.ToString());
-                //Console.WriteLine(ex.ToString());
             }
             return result;
         }
@@ -212,7 +209,6 @@ namespace CprBroker.DAWA
                     nonValidKeysOrValues++;
                     string logMsg = string.Format("Input not valid. KEY = {0} and Value = {1}", pair.Key, pair.Value);
                     Admin.LogError(logMsg);
-                    //Console.WriteLine(logMsg);
                 }
             }
             return (nonValidKeysOrValues == 0 ? true : false);
@@ -234,7 +230,6 @@ namespace CprBroker.DAWA
             {
                 string logMsg = string.Format("Service name not valid. Input = {0}", serviceName);
                 Admin.LogError(logMsg);
-                //Console.WriteLine(logMsg);
             }
             return (result == true ? true : false);
         }
@@ -270,7 +265,7 @@ namespace CprBroker.DAWA
                 }
                 if (!string.IsNullOrEmpty(currentAddressWrapper.ClearWrittenAddress.Door.ToString()))
                 {
-                    string door = currentAddressWrapper.ClearWrittenAddress.Door.ToString();
+                    string door = currentAddressWrapper.ClearWrittenAddress.Door.ToString().ToLower();
                     if(door.StartsWith("0"))
                     {
                         addressDict.Add("dør", door.TrimStart('0'));
@@ -283,13 +278,10 @@ namespace CprBroker.DAWA
             }
             catch(Exception ex)
             {
-                string addressWrapper = string.Format("currentAddressWrapper: {0}", currentAddressWrapper.ToString());
-                Admin.LogException(ex, addressWrapper);
+                //string addressWrapper = string.Format("currentAddressWrapper: {0}", currentAddressWrapper.ToString());
+                //Admin.LogException(ex, addressWrapper);
             }
-            string test = string.Format("currentAddressWrapper dict as JSON: {0}", JsonConvert.SerializeObject(addressDict));
-            Admin.LogSuccess(test);
             return addressDict;
         }
-
     }
 }
