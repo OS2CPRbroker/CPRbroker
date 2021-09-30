@@ -23,6 +23,7 @@
  *
  * Contributor(s):
  * Heini Leander Ovason
+ * Rune Grysbæk, Rødovre Kommune
  *
  * The code is currently governed by IT- og Telestyrelsen / Danish National
  * IT and Telecom Agency
@@ -261,7 +262,11 @@ namespace CprBroker.DAWA
                     {
                         addressDict.Add("etage", etage.TrimStart('0'));
                     }
-                    addressDict.Add("etage", etage);
+                    else
+                    {
+                        addressDict.Add("etage", etage);
+                    }
+
                 }
                 if (!string.IsNullOrEmpty(currentAddressWrapper.ClearWrittenAddress.Door.ToString()))
                 {

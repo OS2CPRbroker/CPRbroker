@@ -86,8 +86,8 @@ namespace CprBroker.Utilities
             public static readonly int Minor = 0;
 
             // TODO: Set version manually in Config project
-            public const string AssemblyVersion = "2.4.7.0";
-            public const string AssemblyFileVersion = "2.4.7.0";
+            public const string AssemblyVersion = "2.4.8.0";
+            public const string AssemblyFileVersion = "2.4.8.0";
         }
 
         public static readonly Guid EventBrokerApplicationId = new Guid("{C98F9BE7-2DDE-404a-BAB5-5A7B1BBC3063}");
