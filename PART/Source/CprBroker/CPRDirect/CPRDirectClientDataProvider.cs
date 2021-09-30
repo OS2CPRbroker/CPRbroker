@@ -127,7 +127,13 @@ namespace CprBroker.Providers.CPRDirect
                     return true;
                 } else
                 {
-                    throw new Exception(error);
+                    // throw new Exception(error);
+
+                    // Throwing an exception will cancel a person removal attempt.
+                    // We do not want this, e.g. if the error occurs solely because CPR Direct does not recognize a given cpr no.
+                    // BUT we do need to log the error in case of other scenarios.
+                    Admin.LogError(error);
+                    return true;
                 }
             }
             else
