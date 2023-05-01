@@ -51,6 +51,7 @@ using System.Xml;
 using CprBroker.Schemas.Part;
 using CprBroker.Engine;
 using CprBroker.Engine.Local;
+using static CprBroker.Engine.DataProviderConfigPropertyInfo;
 
 namespace CprBroker.Providers.CprServices
 {
@@ -60,6 +61,8 @@ namespace CprBroker.Providers.CprServices
         {
             if (string.IsNullOrEmpty(token))
                 token = Constants.DefaultToken;
+
+            Admin.LogFormattedSuccess("##### GCTP Request #####: " + input.Substring(0, 75));
 
             //var baseUrl = "";
             //baseUrl = "https://gctp-demo.cpr.dk/cpr-online-gctp/gctp";
@@ -90,6 +93,8 @@ namespace CprBroker.Providers.CprServices
                     using (var rd = new StreamReader(resp.GetResponseStream(), Constants.XmlEncoding))
                     {
                         ret = rd.ReadToEnd();
+
+                        Admin.LogFormattedSuccess("##### GCTP Response #####: " + ret.Substring(0, 174));
 
                         // Update token if possible
                         var t = Utils.GetToken(resp.Headers);

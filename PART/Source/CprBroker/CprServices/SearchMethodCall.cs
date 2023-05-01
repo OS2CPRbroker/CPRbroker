@@ -48,6 +48,7 @@ using System.Text;
 using System.Xml;
 using CprBroker.Schemas.Part;
 using CprBroker.Providers.CprServices.Responses;
+using CprBroker.Engine.Local;
 
 namespace CprBroker.Providers.CprServices
 {

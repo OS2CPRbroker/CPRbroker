@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
-<Gctp v="1.0" >
+<Gctp v="2.0" >
     <System r="CprSoeg">
         <Service r="NVNSOG2">
             <CprServiceHeader r="NVNSOG2">

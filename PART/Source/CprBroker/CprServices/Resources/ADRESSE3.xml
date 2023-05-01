@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Gctp v="1.0" >
+<Gctp v="2.0" >
     <System r="CprSoeg">
         <Service r="ADRESSE3">
             <CprServiceHeader r="ADRESSE3">
