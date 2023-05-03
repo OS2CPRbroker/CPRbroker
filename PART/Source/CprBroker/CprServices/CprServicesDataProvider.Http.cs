@@ -62,7 +62,7 @@ namespace CprBroker.Providers.CprServices
             if (string.IsNullOrEmpty(token))
                 token = Constants.DefaultToken;
 
-            Admin.LogFormattedSuccess("##### GCTP Request #####: " + input.Substring(0, 75));
+            //Admin.LogFormattedSuccess("##### TEST - Request #####: " + input);
 
             //var baseUrl = "";
             //baseUrl = "https://gctp-demo.cpr.dk/cpr-online-gctp/gctp";
@@ -71,6 +71,7 @@ namespace CprBroker.Providers.CprServices
 
             using (var callContext = this.BeginCall(op, op))
             {
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 // Prepare the request object
                 HttpWebRequest req = WebRequest.Create(this.Address) as HttpWebRequest;
                 req.Method = WebRequestMethods.Http.Post;
@@ -94,7 +95,7 @@ namespace CprBroker.Providers.CprServices
                     {
                         ret = rd.ReadToEnd();
 
-                        Admin.LogFormattedSuccess("##### GCTP Response #####: " + ret.Substring(0, 174));
+                        //Admin.LogFormattedSuccess("##### TEST - Response #####: " + ret);
 
                         // Update token if possible
                         var t = Utils.GetToken(resp.Headers);
