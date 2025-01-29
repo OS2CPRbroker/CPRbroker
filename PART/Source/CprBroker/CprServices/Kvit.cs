@@ -47,6 +47,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using CprBroker.Engine.Local;
 
 namespace CprBroker.Providers.CprServices
 {
@@ -79,9 +80,37 @@ namespace CprBroker.Providers.CprServices
             if (kvitNode != null)
             {
                 var ret = new Kvit();
-                ret.Row = kvitNode.Attributes["r"].Value;
-                ret.ReturnCode = kvitNode.Attributes["v"].Value;
-                ret.ReturnText = kvitNode.Attributes["t"].Value;
+
+                try
+                {
+                    ret.Row = kvitNode.Attributes["r"].Value;
+                }
+                catch (Exception ex)
+                {
+                    Admin.LogFormattedError("Error setting ret.Row: {0}", ex.Message);
+                    ret.Row = "Unknown";
+                }
+
+                try
+                {
+                    ret.ReturnCode = kvitNode.Attributes["v"].Value;
+                }
+                catch (Exception ex)
+                {
+                    Admin.LogFormattedError("Error setting ret.ReturnCode: {0}", ex.Message);
+                    ret.ReturnCode = "Unknown";
+                }
+
+                try
+                {
+                    ret.ReturnText = kvitNode.Attributes["t"].Value;
+                }
+                catch (Exception ex)
+                {
+                    Admin.LogFormattedError("Error setting ret.ReturnText: {0}", ex.Message);
+                    ret.ReturnText = "No text";
+                }
+
 
                 if (kvitNode.ChildNodes.Count > 0)
                 {

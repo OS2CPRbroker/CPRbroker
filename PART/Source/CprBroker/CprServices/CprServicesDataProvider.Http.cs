@@ -58,6 +58,8 @@ namespace CprBroker.Providers.CprServices
     {
         public Kvit Send(string op, string input, ref string token, out string ret)
         {
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+
             if (string.IsNullOrEmpty(token))
                 token = Constants.DefaultToken;
 

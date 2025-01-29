@@ -150,7 +150,6 @@ namespace CprBroker.Providers.CprServices
                             break;
                         }
                         var xml = call.ToRequestXml(Properties.Resources.SearchTemplate);
-
                         var xmlOut = "";
                         var kvit = Send(call.Name, xml, ref token, out xmlOut);
                         if (kvit.OK)
@@ -179,6 +178,7 @@ namespace CprBroker.Providers.CprServices
                     }
                     else
                     {
+                        Admin.LogFormattedError("##### Search failed for some reason. Investigate CprBroker.CprServices.CprServicesDataProvider.SearchList() and subsequent calls CprBroker.CprServices.CprServicesDataProvider.https.cs and CprBroker.CprServices.CprServicesDataProvider.Kvit.cs #####");
                         // TODO: What to do if search fails??
                     }
                 }
